@@ -33,7 +33,7 @@ export default function App() {
     }, [])
 
     
-   function handleClick(node) {
+    function handleClick(node) {
         if (!startClicked && !endClicked) {
             console.log(`Setting start at ${node.id}`)
             node.isStart = true
@@ -44,7 +44,19 @@ export default function App() {
             node.isEnd = true
             setEndClicked(true)
         }
-   }
+    }
+
+    function handleDoubleClick(node) {
+        console.log(`Double clicked ${node.id}`)
+        if (node.isStart) {
+            node.isStart = !node.isStart
+            setStartClicked(false)
+        }
+        if (node.isEnd) {
+            node.isEnd = !node.isEnd
+            setEndClicked(false)
+        }
+    }
 
    
 
@@ -64,6 +76,7 @@ export default function App() {
                             isStart={isStart}
                             isEnd={isEnd}  
                             handleClick={() => handleClick(node)}
+                            handleDoubleClick={() => handleDoubleClick(node)}
                         >{rowIdx+1 * nodeIdx+1}</Node>)
                     })      
                 }

@@ -73,6 +73,7 @@ export default function Node(props) {
             className='node'
             style={styles}
             onClick={props.handleClick}
+            onDoubleClick={props.handleDoubleClick}
         >
             {`${node.id}`}
         </div>
