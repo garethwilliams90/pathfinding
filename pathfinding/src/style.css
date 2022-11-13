@@ -1,9 +1,9 @@
 .grid {
     position: relative;
     display: flex;
+    align-items: center;
+    justify-content: center;
     
-
-
     border: 5px solid black;
 }
 

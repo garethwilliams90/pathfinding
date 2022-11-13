@@ -1,6 +1,6 @@
 .node {
     border: 2px solid black;
-    border-radius: 4px;
+    border-radius: 0px;
 
     margin: 1px;
 
@@ -9,4 +9,8 @@
     
     width: 4rem;
     height: 4rem;
+
+    align-items: center;
+    text-align: center;
+    justify-content: center;
 }
