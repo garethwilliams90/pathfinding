@@ -23,8 +23,8 @@ export default function App() {
                     col,
                     row,
                     id: (row) * (col),
-                    isStart: null,
-                    isEnd: null,
+                    isStart: false,
+                    isEnd: false,
                 }
                 currentRow.push(currentNode)
             }
@@ -34,12 +34,12 @@ export default function App() {
 
     
    function handleClick(node) {
-        if (!startClicked) {
+        if (!startClicked && !endClicked) {
             console.log(`Setting start at ${node.id}`)
             node.isStart = true
             setStartClicked(prevState => !prevState)
         }
-        else if (startClicked) {
+        else if (startClicked && !endClicked) {
             console.log(`Setting end at ${node.id}`)
             node.isEnd = true
             setEndClicked(true)
