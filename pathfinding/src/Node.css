@@ -1,0 +1,12 @@
+.node {
+    border: 2px solid black;
+    border-radius: 4px;
+
+    margin: 1px;
+
+    position: relative;
+    display: flex;
+    
+    width: 4rem;
+    height: 4rem;
+}

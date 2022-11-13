@@ -1,0 +1,8 @@
+.grid {
+    position: relative;
+    display: flex;
+    
+
+
+    border: 5px solid black;
+}
