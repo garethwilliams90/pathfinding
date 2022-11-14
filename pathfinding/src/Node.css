@@ -1,5 +1,5 @@
 .node {
-    border: 2px solid black;
+    border: 1px solid black;
     border-radius: 0px;
 
     margin: 1px;
@@ -7,8 +7,8 @@
     position: relative;
     display: flex;
     
-    width: 4rem;
-    height: 4rem;
+    width: 3rem;
+    height: 3rem;
 
     align-items: center;
     text-align: center;

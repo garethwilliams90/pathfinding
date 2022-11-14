@@ -10,3 +10,7 @@
 .title {
     border: 2px solid black;
 }
+
+.node-grid {
+    background: transparent;
+}

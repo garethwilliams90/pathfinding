@@ -6,12 +6,13 @@ import './style.css'
 
 
 export default function App() {
-    const ROWS = 7
-    const COLS = 11
+    const ROWS = 6
+    const COLS = 10
 
     const [nodes, setNodes] = useState([])
     const [startClicked, setStartClicked] = useState(false)
     const [endClicked, setEndClicked] = useState(false)
+    const [walls, setWalls] = useState([])
     
 
     // On first render --> create 2D array of nodes
@@ -22,9 +23,15 @@ export default function App() {
                 const currentNode = {
                     col,
                     row,
-                    id: (row) * (col),
+                    id: ((COLS-1) * (row-1)) + col,
+
                     isStart: false,
                     isEnd: false,
+                    isWall: false,
+                    isVisited: false,
+                    isCurrent: false,
+
+                    distance: null,
                 }
                 currentRow.push(currentNode)
             }
@@ -37,13 +44,17 @@ export default function App() {
         if (!startClicked && !endClicked) {
             console.log(`Setting start at ${node.id}`)
             node.isStart = true
-            setStartClicked(prevState => !prevState)
+            setStartClicked(true)
+            
         }
         else if (startClicked && !endClicked) {
             console.log(`Setting end at ${node.id}`)
             node.isEnd = true
             setEndClicked(true)
+            
         }
+        console.log(`isStart = ${startClicked}`)
+        console.log(`isEnd = ${endClicked}`)
     }
 
     function handleDoubleClick(node) {
@@ -58,26 +69,57 @@ export default function App() {
         }
     }
 
+    function setWall(node) {
+        if (!node.isStart && !node.isEnd) {
+            console.log(`Set wall at ${node.id}`)
+            node.isWall = !node.isWall
+            setWalls(prevWalls => [...prevWalls, node.id])
+        }
+    }
+
+    // Renders for walls
+    useEffect(() => {
+        setNodes(prevState => [...prevState])
+    }, [walls])
+
    
 
     console.log(nodes)
 
     const nodeElements = nodes.map((row, rowIdx) => {
         return (
-            <div key={rowIdx}>
+            <div key={rowIdx}
+            className="node-grid"
+            >
                 {row.map((node, nodeIdx) => {
-                    const {isStart, isEnd} = node
+                    const {
+                        col,
+                        row,
+                        id,
+                        isStart,
+                        isEnd,
+                        isWall,
+                        isVisited,
+                        isCurrent,
+                        distance} = node
                     return (
                         <Node 
-                            key={nodeIdx}
-                            col={rowIdx}
-                            row={nodeIdx}
-                            id={(rowIdx+1) * (nodeIdx+1)}
+                            key={id}
+                            col={col}
+                            row={row}
+                            id={id}
+
                             isStart={isStart}
                             isEnd={isEnd}  
+                            isWall={isWall}
+                            isVisited={isVisited}
+                            isCurrent={isCurrent}
+                            distance={distance}
+
                             handleClick={() => handleClick(node)}
                             handleDoubleClick={() => handleDoubleClick(node)}
-                        >{rowIdx+1 * nodeIdx+1}</Node>)
+                            setWall={() => setWall(node)}
+                        ></Node>)
                     })      
                 }
             </div>
