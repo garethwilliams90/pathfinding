@@ -8,8 +8,8 @@ import dijkstra from './algorithms/dijkstra'
 
 
 export default function Visualiser() {
-    const ROWS = 30
-    const COLS = 45
+    const ROWS = 8
+    const COLS = 12
 
     const [nodes, setNodes] = useState([])
     const [startClicked, setStartClicked] = useState(false)
