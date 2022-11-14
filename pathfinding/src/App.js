@@ -1,28 +1,24 @@
 import React, {useState, useEffect} from 'react'
-import {nanoid} from "nanoid"
-
 import Node from './Node'
+//import {dijkstra, getShortestPath} from './algorithms/dijkstra'
+
 import './style.css'
-
-import dijkstra from './algorithms/dijkstra'
-
+import { dijk } from './algorithms/dijk'
 
 export default function Visualiser() {
     const ROWS = 8
     const COLS = 12
 
     const [nodes, setNodes] = useState([])
+    const [walls, setWalls] = useState([])
+
     const [startClicked, setStartClicked] = useState(false)
     const [endClicked, setEndClicked] = useState(false)
-
-    const [walls, setWalls] = useState([])
     const [startNode, setStartNode] = useState({})
     const [endNode, setEndNode] = useState({})
 
     const [algoOn, setAlgoOn] = useState(false)
     
-    
-
     // On first render --> create 2D array of nodes
     useEffect(() => {
         for(let col = 1; col < COLS+1; col++) {
@@ -31,7 +27,7 @@ export default function Visualiser() {
                 const currentNode = {
                     col,
                     row,
-                    id: ((COLS-1) * (row-1)) + col,
+                    id: ((COLS) * (row-1)) + col,
 
                     isStart: false,
                     isEnd: false,
@@ -40,13 +36,13 @@ export default function Visualiser() {
                     isCurrent: false,
 
                     distance: Infinity,
+                    previousNode: null,
                 }
                 currentRow.push(currentNode)
             }
             setNodes(prevState => [...prevState, currentRow])
         }
     }, [])
-
     
     function handleClick(node) {
         if (!startClicked && !endClicked) {
@@ -60,7 +56,6 @@ export default function Visualiser() {
             node.isEnd = true
             setEndClicked(true)
             setEndNode(node)
-            
         }
         console.log(`isStart = ${startClicked}`)
         console.log(`isEnd = ${endClicked}`)
@@ -82,14 +77,13 @@ export default function Visualiser() {
 
     function setWall(node) {
         if (!node.isStart && !node.isEnd) {
-            console.log(`Set wall at ${node.id}`)
+            // console.log(`Set wall at ${node.id}`)
             node.isWall = !node.isWall
-            setWalls(prevWalls => [...prevWalls, node.id])
-            
+            setWalls(prevWalls => [...prevWalls, node.id]) 
         }
     }
 
-    // Renders for walls
+    // Re-renders for walls
     useEffect(() => {
         //setNodes(prevState => [...prevState])
     }, [walls])
@@ -100,7 +94,7 @@ export default function Visualiser() {
             <div key={rowIdx}
             className="node-grid"
             >
-                {row.map((node, nodeIdx) => {
+                {row.map(node => {
                     const {
                         col,
                         row,
@@ -110,7 +104,8 @@ export default function Visualiser() {
                         isWall,
                         isVisited,
                         isCurrent,
-                        distance} = node
+                        distance,
+                        previousNode} = node
                     return (
                         <Node 
                             key={id}
@@ -124,6 +119,7 @@ export default function Visualiser() {
                             isVisited={isVisited}
                             isCurrent={isCurrent}
                             distance={distance}
+                            previousNode={previousNode}
 
                             handleClick={() => handleClick(node)}
                             handleDoubleClick={() => handleDoubleClick(node)}
@@ -136,12 +132,20 @@ export default function Visualiser() {
     })
 
     useEffect(() => {
-        console.log("run dijkstra..")
+        console.log("Running dijkstra's...")
     }, [algoOn])
     
+   
+
     function runDijkstra() {
-        dijkstra(startNode, endNode, nodes)
         setAlgoOn(true)
+        dijk(startNode, endNode, nodes) 
+        console.log(nodes)
+        console.log(startNode)
+        console.log(endNode)
+        //const visitedNodesInOrder = dijkstra(startNode, endNode, nodes)
+        //const nodesInShortestPathOrder = getShortestPath(endNode)
+        //displayDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
     }
     
 

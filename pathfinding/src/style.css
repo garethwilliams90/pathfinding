@@ -30,3 +30,7 @@
     width: 100px;
     height: 40px;
 }
+
+.node-shortest-path {
+    background-color: blue;
+}

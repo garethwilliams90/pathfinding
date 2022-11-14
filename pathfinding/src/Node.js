@@ -23,7 +23,7 @@ export default function Node(props) {
             onDoubleClick={props.handleDoubleClick}
             onDragEnter={props.setWall}
         >
-           {/* {`${props.id}`} */} 
+           {`${props.id}`}
         </div>
     )
 }
