@@ -7,10 +7,26 @@
     border: 5px solid black;
 }
 
-.title {
-    border: 2px solid black;
-}
+
 
 .node-grid {
     background: transparent;
+}
+
+.nav {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 10px;
+    padding: 5px;
+    border: 3px solid black;
+
+}
+
+
+.button {
+    width: 100px;
+    height: 40px;
 }

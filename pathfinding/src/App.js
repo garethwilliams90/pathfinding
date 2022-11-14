@@ -4,15 +4,21 @@ import {nanoid} from "nanoid"
 import Node from './Node'
 import './style.css'
 
+import dijkstra from './algorithms/dijkstra'
 
-export default function App() {
-    const ROWS = 6
-    const COLS = 10
+
+export default function Visualiser() {
+    const ROWS = 30
+    const COLS = 45
 
     const [nodes, setNodes] = useState([])
     const [startClicked, setStartClicked] = useState(false)
     const [endClicked, setEndClicked] = useState(false)
+
     const [walls, setWalls] = useState([])
+    const [startNode, setStartNode] = useState(null)
+    const [endNode, setEndNode] = useState(null)
+    
     
 
     // On first render --> create 2D array of nodes
@@ -45,12 +51,13 @@ export default function App() {
             console.log(`Setting start at ${node.id}`)
             node.isStart = true
             setStartClicked(true)
-            
+            setStartNode(node.id)
         }
         else if (startClicked && !endClicked) {
             console.log(`Setting end at ${node.id}`)
             node.isEnd = true
             setEndClicked(true)
+            setEndNode(node.id)
             
         }
         console.log(`isStart = ${startClicked}`)
@@ -62,10 +69,12 @@ export default function App() {
         if (node.isStart) {
             node.isStart = !node.isStart
             setStartClicked(false)
+            setStartNode(null)
         }
         if (node.isEnd) {
             node.isEnd = !node.isEnd
             setEndClicked(false)
+            setEndNode(null)
         }
     }
 
@@ -74,17 +83,15 @@ export default function App() {
             console.log(`Set wall at ${node.id}`)
             node.isWall = !node.isWall
             setWalls(prevWalls => [...prevWalls, node.id])
+            
         }
     }
 
     // Renders for walls
     useEffect(() => {
-        setNodes(prevState => [...prevState])
+        //setNodes(prevState => [...prevState])
     }, [walls])
-
-   
-
-    console.log(nodes)
+    
 
     const nodeElements = nodes.map((row, rowIdx) => {
         return (
@@ -126,14 +133,25 @@ export default function App() {
         )
     })
 
+    
+
     return (
         <div>
-            <h1 className='title'>App Component</h1>
-       
+            <div className='nav'>
+                <button 
+                className='button dijkstra'
+                onClick={() => dijkstra(startNode, endNode, nodes, walls)}
+                >
+                    Run Dijkstra's
+                </button>
+            </div>
+        
             <div className='grid'>
                 {nodeElements}
             </div>
             
         </div>
+        
+        
     )
 }
