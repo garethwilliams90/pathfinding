@@ -6,11 +6,11 @@ export default function Node(props) {
     // Determines the colours of the nodes when state is changed
     const styles = {
         backgroundColor: 
-        props.isStart ? "#6f1cff" 
+        props.isCurrent ? "#ff7300"
+        : props.isStart ? "#6f1cff" 
         : props.isEnd ? "#ff1c6b" 
         : props.isWall ? "#06031c"
         : props.isVisited ? "#35c441"
-        : props.isCurrent ? "#ff7300"
         : "transparent"
     }
     

@@ -16,8 +16,10 @@ export default function Visualiser() {
     const [endClicked, setEndClicked] = useState(false)
 
     const [walls, setWalls] = useState([])
-    const [startNode, setStartNode] = useState(null)
-    const [endNode, setEndNode] = useState(null)
+    const [startNode, setStartNode] = useState({})
+    const [endNode, setEndNode] = useState({})
+
+    const [algoOn, setAlgoOn] = useState(false)
     
     
 
@@ -37,7 +39,7 @@ export default function Visualiser() {
                     isVisited: false,
                     isCurrent: false,
 
-                    distance: null,
+                    distance: Infinity,
                 }
                 currentRow.push(currentNode)
             }
@@ -51,13 +53,13 @@ export default function Visualiser() {
             console.log(`Setting start at ${node.id}`)
             node.isStart = true
             setStartClicked(true)
-            setStartNode(node.id)
+            setStartNode(node)
         }
         else if (startClicked && !endClicked) {
             console.log(`Setting end at ${node.id}`)
             node.isEnd = true
             setEndClicked(true)
-            setEndNode(node.id)
+            setEndNode(node)
             
         }
         console.log(`isStart = ${startClicked}`)
@@ -133,6 +135,14 @@ export default function Visualiser() {
         )
     })
 
+    useEffect(() => {
+        console.log("run dijkstra..")
+    }, [algoOn])
+    
+    function runDijkstra() {
+        dijkstra(startNode, endNode, nodes)
+        setAlgoOn(true)
+    }
     
 
     return (
@@ -140,7 +150,7 @@ export default function Visualiser() {
             <div className='nav'>
                 <button 
                 className='button dijkstra'
-                onClick={() => dijkstra(startNode, endNode, nodes, walls)}
+                onClick={runDijkstra}
                 >
                     Run Dijkstra's
                 </button>

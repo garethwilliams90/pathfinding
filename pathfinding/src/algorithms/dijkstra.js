@@ -17,49 +17,29 @@
 
 // Repeat process getting distance of current node's unvisited neighbours
 
-export default function dijkstra(start, end, nodeArray, wallsArray) {
-    // console.log("running dijstras...")
-    console.log(`Starting at: ${start}\nEnding at: ${end}`)
-    // console.log(`The walls are: ${wallsArray}`)
-
-    console.log(nodeArray)
+export default function dijkstra(start, end, nodeArray) {
 
     // Defining constants
-    const visitedNodesInOrder = []
-    const unvisitedNodes = [...nodeArray]
+    let visitedNodesInOrder = []
+    const nodes = createLinearArray(nodeArray)
+    let unvisitedNodes = [...nodes]
 
+    // Set start node as distance = 0
+    // All distance default as infinity
+    start.distance = 0
 
-    function getStartNode() {
-        let startNode = null
-        for (let i = 0; i < nodeArray.length; i++) {
-            for (let j = 0; j < nodeArray[i].length; j++) {
-                if (nodeArray[i][j].isStart) {
-                    console.log(nodeArray[i][j])
-                    startNode = nodeArray[i][j]
-                }
-            
-            }
+    // Set starting node as current
+    start.isCurrent = true
+
+    console.log(nodes)
+}
+
+function createLinearArray(nodeArray) {
+    let nodes = []
+    for (let i = 0; i < nodeArray.length; i++) {
+        for (let j = 0; j < nodeArray[i].length; j++) {
+            nodes.push(nodeArray[i][j])
         }
-        return startNode
     }
-
-    function getEndNode() {
-        let endNode = null
-        for (let i = 0; i < nodeArray.length; i++) {
-            for (let j = 0; j < nodeArray[i].length; j++) {
-                if (nodeArray[i][j].isEnd) {
-                    console.log(nodeArray[i][j])
-                    endNode = nodeArray[i][j]
-                }
-            
-            }
-        }
-        return endNode
-    }
-
-    getStartNode()
-    getEndNode()
-
-
-
+    return nodes
 }
