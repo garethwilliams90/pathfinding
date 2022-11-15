@@ -21,26 +21,65 @@
 // set it as the new current node
 // Go back to STEP 3
 
-const COLS = 12
 const ROWS = 8
+const COLS = 12
 
 export function dijk(startNode, endNode, grid) {
+    let nodesInVisitedOrder = []
     // Get all nodes in one array
-    let allNodes = linearNodeArray(grid)
+    const allNodes = linearNodeArray(grid)
+    const unvisitedNodes = [...allNodes]
     console.log(allNodes)
-
-    // Create set of unvisited nodes
-    var unvisitedNodes = [...allNodes]
+    
     // Set the start distance to 0 --> all nodes default distance is Infinity
     startNode.distance = 0
-    startNode.isCurrent = true
     let currentNode = startNode
-    console.log(currentNode)
+    
+    let endReached = false
+    let distanceSortedArray = sortNodesByDistance(allNodes)
+    let minUnvisitedDistance = distanceSortedArray[0].distance
+    console.log(minUnvisitedDistance)
 
-    // For current node --> create arr of unvisited neighbours
-    getUnvisitedNeighbours(currentNode, allNodes)
+    while (!endReached || minUnvisitedDistance !== Infinity) {
 
+        step3(currentNode)
+        function step3(currentNode) {
+            console.log("CurrentNode: ",currentNode)
+            currentNode.isCurrent = true
+            // For the current node...
+            let currentUnvisitedNeighbours = getUnvisitedNeighbours(currentNode, unvisitedNodes)
+            currentUnvisitedNeighbours.map(node => node.isVisited = true)
+            // get distances for these unvisited neighbours
+            getTentativeDistances(currentUnvisitedNeighbours, currentNode)
+            
+            // Mark current node as visited
+            currentNode.isVisited = true
+            // Remove current node from unvisited set
+            console.log("Current: ", currentNode)
+            let currentIndex = unvisitedNodes.indexOf(currentNode) -1
+            console.log("Unvisited ", unvisitedNodes)
+            console.log("Current idx ", currentIndex)
+            unvisitedNodes.splice(currentIndex, 1)
+            console.log("Unvisited length ", unvisitedNodes.length)
+            // Add current node to visited set
+            let node = unvisitedNodes.splice(currentIndex, 1)[0]
+            nodesInVisitedOrder.push(node)
+            console.log("Visited Nodes ", nodesInVisitedOrder)
+    
+            // Unassign current node
+            currentNode.isCurrent = false
+    
+            // Re-assign current by selecting node with smallest distance in unvisited set
+            sortNodesByDistance(unvisitedNodes)
+            let newCurrentNode = unvisitedNodes[0]
+    
+            step3(newCurrentNode)
+        }
+        endReached = checkEndReached()
+    }
+    console.log("End reached")
 }
+
 
 function linearNodeArray(grid) {
     let nodes = []
@@ -53,31 +92,36 @@ function linearNodeArray(grid) {
 }
 
 function getUnvisitedNeighbours(current, allNodes) {
-    const neighbours = [{}]
+    let neighbours = []
     const currentIndex = getCurrentIndex(current)
+    console.log(allNodes)
    
     //4 adjacent neighbours in each direction
-    //Above: -COLS
+    //Above: -1
     const above = allNodes[currentIndex-1]
-    if (!above.isWall && !above.isVisited) {
+    if (above && (!above.isWall && !above.isVisited)) {
         neighbours.push(above)
     }
-    // Below: +COLS
+    
+    // Below: +1
     const below = allNodes[currentIndex+1]
-    if (!below.isWall && !below.isVisited) {
+    if (below && (!below.isWall && !below.isVisited)) {
         neighbours.push(below)
     }
-    // Left: -1
-    const left = allNodes[currentIndex-8]
-    if (!left.isWall && !below.isVisited) {
+
+    // Left: -ROWS
+    const left = allNodes[currentIndex-ROWS]
+    if (left && (!left.isWall && !left.isVisited)) {
         neighbours.push(left)
     }
-    // Right: +1
-    const right = allNodes[currentIndex+8]
-    if (!right.isWall && !right.isVisited) {
+
+    // Right: +ROWS
+    const right = allNodes[currentIndex+ROWS]
+    if (right && (!right.isWall && !right.isVisited)) {
         neighbours.push(right)
     }
-    
+
+    console.log(neighbours)
     return neighbours
 }
 
@@ -86,4 +130,39 @@ function getCurrentIndex(current) {
     const colNum = current.col
     const arrayIndex = ((colNum - 1) * ROWS) + (rowNum - 1)
     return arrayIndex
+}
+
+function getTentativeDistances(unvisitedNeigbours, currentNode) {
+    const prevDistances = unvisitedNeigbours.map(node => node.distance)
+    const newDistances = unvisitedNeigbours.map(node => (
+        Math.abs(currentNode.col - node.col) + Math.abs(currentNode.row - node.row)))
+
+    const smallestDistances = []
+    for(let i = 0; i < prevDistances.length; i++) {
+        if (newDistances[i] < prevDistances[i]) {
+            smallestDistances.push(newDistances[i])
+        } else smallestDistances.push(prevDistances[i])
+    }
+    //Now update the neighbours' distances
+    for (let i = 0; i < smallestDistances.length; i++) {
+        unvisitedNeigbours[i].distance = smallestDistances[i]
+    }
+
+    return unvisitedNeigbours
+}
+
+function checkEndReached(nodesInVisitedOrder) {
+    for (let i = 0; i < nodesInVisitedOrder.length; i++) {
+        if (nodesInVisitedOrder[i].isEnd) {
+            console.log(`End node: ${nodesInVisitedOrder[i].id}`)
+            return true
+        }
+    }
+    return false
+}
+
+function sortNodesByDistance(unvisitedNodes) {
+    // Shorter distance takes preferences
+    unvisitedNodes.sort((a, b) => (a.distance > b.distance) ? 1 : -1)
+    return unvisitedNodes
 }

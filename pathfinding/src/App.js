@@ -3,7 +3,7 @@ import Node from './Node'
 //import {dijkstra, getShortestPath} from './algorithms/dijkstra'
 
 import './style.css'
-import { dijk } from './algorithms/dijk'
+import { dijk } from './algorithms/dijk2'
 
 export default function Visualiser() {
     const ROWS = 8
@@ -132,7 +132,7 @@ export default function Visualiser() {
     })
 
     useEffect(() => {
-        console.log("Running dijkstra's...")
+        //console.log("Running dijkstra's...")
     }, [algoOn])
     
    
@@ -140,9 +140,9 @@ export default function Visualiser() {
     function runDijkstra() {
         setAlgoOn(true)
         dijk(startNode, endNode, nodes) 
-        console.log(nodes)
-        console.log(startNode)
-        console.log(endNode)
+        // console.log(nodes)
+        // console.log(startNode)
+        // console.log(endNode)
         //const visitedNodesInOrder = dijkstra(startNode, endNode, nodes)
         //const nodesInShortestPathOrder = getShortestPath(endNode)
         //displayDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
