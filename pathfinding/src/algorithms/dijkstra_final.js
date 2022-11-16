@@ -1,5 +1,5 @@
 // DIJKSTRA's ALGORITHM
-const SPEED = 10
+const SPEED = 20
 // Takes the startNode, endNode and the 2D array of all nodes
 export async function dijkstra(start, end, grid) {
     // Create a single array with all nodes & create a copy
@@ -8,7 +8,8 @@ export async function dijkstra(start, end, grid) {
     // Reset all nodes when function is called --> keep walls
     nodes.map(node => (node.isVisited = false,
          node.isCurrent = false,
-         node.isBeingConsidered = false))
+         node.isBeingConsidered = false,
+         node.isPath = false))
     
 
     const nodesInVisitedOrder = []
@@ -121,7 +122,7 @@ export async function shortestPath(endNode) {
     // Colour the nodes
     
     for (let i = 0; i < shortestPath.length; i++) {
-        await sleep(100)
+        await sleep(SPEED)
         shortestPath[i].isPath = true
     }
     return shortestPath
