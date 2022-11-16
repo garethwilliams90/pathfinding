@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import Node from './Node'
 import {dijkstra, shortestPath} from './algorithms/dijkstra_final'
+import {aStar} from './algorithms/astar'
 
 import './style.css'
-import { dijk } from './algorithms/dijk2'
 
 export default function Visualiser() {
-    const ROWS = 8
-    const COLS = 12
+    const ROWS = 15
+    const COLS = 30
 
     const [nodes, setNodes] = useState([])
     const [walls, setWalls] = useState([])
@@ -35,6 +35,7 @@ export default function Visualiser() {
                     isVisited: false,
                     isCurrent: false,
                     isBeingConsidered: false,
+                    isPath: false,
 
                     distance: Infinity,
                     previousNode: null,
@@ -47,19 +48,19 @@ export default function Visualiser() {
     
     function handleClick(node) {
         if (!startClicked && !endClicked) {
-            console.log(`Setting start at ${node.id}`)
+            //console.log(`Setting start at ${node.id}`)
             node.isStart = true
             setStartClicked(true)
             setStartNode(node)
         }
         else if (startClicked && !endClicked) {
-            console.log(`Setting end at ${node.id}`)
+            //console.log(`Setting end at ${node.id}`)
             node.isEnd = true
             setEndClicked(true)
             setEndNode(node)
         }
-        console.log(`isStart = ${startClicked}`)
-        console.log(`isEnd = ${endClicked}`)
+        //console.log(`isStart = ${startClicked}`)
+        //console.log(`isEnd = ${endClicked}`)
     }
 
     function handleDoubleClick(node) {
@@ -106,6 +107,7 @@ export default function Visualiser() {
                         isVisited,
                         isCurrent,
                         isBeingConsidered,
+                        isPath,
                         distance,
                         previousNode} = node
                     return (
@@ -121,6 +123,7 @@ export default function Visualiser() {
                             isVisited={isVisited}
                             isCurrent={isCurrent}
                             isBeingConsidered={isBeingConsidered}
+                            isPath={isPath}
                             distance={distance}
                             previousNode={previousNode}
 
@@ -141,19 +144,27 @@ export default function Visualiser() {
     // Refresh rate of animations
     const [time, setTime] = useState(Date.now());
     useEffect(() => {
-    const interval = setInterval(() => setTime(Date.now()), 10);
+    const interval = setInterval(() => setTime(Date.now()), 1);
     return () => {
         clearInterval(interval);
     };
     }, []);
-    
-   
+  
 
-    function runDijkstra() {
+    async function runDijkstra() {
         setAlgoOn(true)
-        dijkstra(startNode, endNode, nodes)   
-        shortestPath(endNode) 
+        // Wait until dijkstra returns a value before going on to next line
+        const result = await dijkstra(startNode, endNode, nodes)
+        setAlgoOn(false)
+        shortestPath(endNode)
     }
+
+    function runAStar() {
+        setAlgoOn(true)
+        aStar(startNode, endNode, nodes)
+    }
+    
+    
     
 
     return (
@@ -164,6 +175,12 @@ export default function Visualiser() {
                 onClick={runDijkstra}
                 >
                     Run Dijkstra's
+                </button>
+                <button 
+                className='button astar'
+                onClick={runAStar}
+                >
+                    Run A* Search
                 </button>
             </div>
         

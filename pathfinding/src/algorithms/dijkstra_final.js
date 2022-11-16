@@ -1,16 +1,15 @@
 // DIJKSTRA's ALGORITHM
-
+const SPEED = 10
 // Takes the startNode, endNode and the 2D array of all nodes
 export async function dijkstra(start, end, grid) {
-    // Store constants
-    const COLS = grid.length
-    const ROWS = grid[0].length
-
     // Create a single array with all nodes & create a copy
     const nodes = linearNodes(grid)
-    console.log("NODES",nodes)
     let nodesCopy = [...nodes]
-    console.log("Grid: ", nodesCopy)
+    // Reset all nodes when function is called --> keep walls
+    nodes.map(node => (node.isVisited = false,
+         node.isCurrent = false,
+         node.isBeingConsidered = false))
+    
 
     const nodesInVisitedOrder = []
     // Mark ALL nodes as unvisited
@@ -19,17 +18,14 @@ export async function dijkstra(start, end, grid) {
     start.distance = 0
 
     // While there are still unvisited nodes
-    let count = 0
-    while (unvisited.length >=0 && count < 100) {
+    while (!nodesInVisitedOrder.includes(end)) {
         
         // sort unvisited by distance
         sortUnvisitedByDistance(unvisited)
-        console.log("Unvisited Now Sorted By Distnce: ",unvisited)
         
         // set current (closest) as min distance node --> first time give startNode
         const current = unvisited[0]
         current.isCurrent = true
-        console.log("Current (closest) Node: ", current)
 
         // if current is wall --> continue
         if (current.isWall) continue
@@ -38,10 +34,10 @@ export async function dijkstra(start, end, grid) {
         if (current.distance === Infinity) return nodesInVisitedOrder
     
         // else --> set current to visited and add to visited set .push()
-        await sleep(50)
+        await sleep(SPEED)
         current.isVisited = true
         nodesInVisitedOrder.push(current)
-        console.log("Nodes in visited order: ",nodesInVisitedOrder)
+        //console.log("Nodes in visited order: ",nodesInVisitedOrder)
         // Remove current node from the unvisited set
         unvisited.splice(0,1)
     
@@ -51,14 +47,11 @@ export async function dijkstra(start, end, grid) {
         // else --> update unvisited neighbours' distances 
         updateUnvisitedNeighbours(current, grid)
         current.isCurrent = false
-        count++
-    }
-
-
+    } 
 }
 
 // WORKING CORRECTLY
-function updateUnvisitedNeighbours(current, grid) {
+async function updateUnvisitedNeighbours(current, grid) {
     // First need to get all the unvisited neighbours
     const neighbours = getUnvisitedNeighbours(current, grid)
     
@@ -67,8 +60,8 @@ function updateUnvisitedNeighbours(current, grid) {
         neighbours[i].distance = current.distance + 1
         neighbours[i].previousNode = current
         neighbours[i].isBeingConsidered = true
+        await sleep(SPEED)
     }
-    console.log("Filtered: ", neighbours)
 }
 
 // WORKING CORRECTLY
@@ -109,13 +102,14 @@ function sortUnvisitedByDistance(unvisited) {
      unvisited.sort((a, b) => (a.distance > b.distance) ? 1 : -1)
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 // WORKING CORRECTLY
-export function shortestPath(endNode) {
+export async function shortestPath(endNode) {
     // Uses the previousNode prop to calculate the shortest path
     // Dijkstra's algorithm took
-    console.log("Final node: ", endNode)
-
     const shortestPath = []
     let currentNode = endNode
     while (currentNode !== null) {
@@ -124,9 +118,12 @@ export function shortestPath(endNode) {
         currentNode = currentNode.previousNode
     }
 
-    console.log("Shortest Path: ", shortestPath)
+    // Colour the nodes
+    
+    for (let i = 0; i < shortestPath.length; i++) {
+        await sleep(100)
+        shortestPath[i].isPath = true
+    }
+    return shortestPath
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
