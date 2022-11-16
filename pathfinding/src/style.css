@@ -1,10 +1,15 @@
+* {
+    background-color: #5f4d85;
+}
+
 .grid {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     
-    border: 5px solid black;
+    border: 2px solid black;
+    padding: 5px;
 }
 
 
@@ -27,8 +32,10 @@
 
 
 .button {
-    width: 100px;
-    height: 40px;
+    width: 200px;
+    height: 60px;
+    background-color: #4b00cc;
+    border-radius: 20px;
 }
 
 .node-shortest-path {

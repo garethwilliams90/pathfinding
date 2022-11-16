@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Node from './Node'
-//import {dijkstra, getShortestPath} from './algorithms/dijkstra'
+import {dijkstra, shortestPath} from './algorithms/dijkstra_final'
 
 import './style.css'
 import { dijk } from './algorithms/dijk2'
@@ -18,7 +18,7 @@ export default function Visualiser() {
     const [endNode, setEndNode] = useState({})
 
     const [algoOn, setAlgoOn] = useState(false)
-    
+
     // On first render --> create 2D array of nodes
     useEffect(() => {
         for(let col = 1; col < COLS+1; col++) {
@@ -34,6 +34,7 @@ export default function Visualiser() {
                     isWall: false,
                     isVisited: false,
                     isCurrent: false,
+                    isBeingConsidered: false,
 
                     distance: Infinity,
                     previousNode: null,
@@ -104,6 +105,7 @@ export default function Visualiser() {
                         isWall,
                         isVisited,
                         isCurrent,
+                        isBeingConsidered,
                         distance,
                         previousNode} = node
                     return (
@@ -118,6 +120,7 @@ export default function Visualiser() {
                             isWall={isWall}
                             isVisited={isVisited}
                             isCurrent={isCurrent}
+                            isBeingConsidered={isBeingConsidered}
                             distance={distance}
                             previousNode={previousNode}
 
@@ -134,18 +137,22 @@ export default function Visualiser() {
     useEffect(() => {
         //console.log("Running dijkstra's...")
     }, [algoOn])
+
+    // Refresh rate of animations
+    const [time, setTime] = useState(Date.now());
+    useEffect(() => {
+    const interval = setInterval(() => setTime(Date.now()), 10);
+    return () => {
+        clearInterval(interval);
+    };
+    }, []);
     
    
 
     function runDijkstra() {
         setAlgoOn(true)
-        dijk(startNode, endNode, nodes) 
-        // console.log(nodes)
-        // console.log(startNode)
-        // console.log(endNode)
-        //const visitedNodesInOrder = dijkstra(startNode, endNode, nodes)
-        //const nodesInShortestPathOrder = getShortestPath(endNode)
-        //displayDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+        dijkstra(startNode, endNode, nodes)   
+        shortestPath(endNode) 
     }
     
 

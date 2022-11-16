@@ -11,6 +11,7 @@ export default function Node(props) {
         : props.isEnd ? "#ff1c6b" 
         : props.isWall ? "#06031c"
         : props.isVisited ? "#35c441"
+        : props.isBeingConsidered ? "#3ba361"
         : "transparent"
     }
     
