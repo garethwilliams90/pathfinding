@@ -9,12 +9,13 @@
     justify-content: center;
     
     border: 2px solid black;
-    padding: 5px;
+    padding: 0px;
+    
 }
 
 .node-grid {
     background: transparent;
-    position: relative;   
+    position: relative;  
 }
 
 .nav {
@@ -30,9 +31,10 @@
 }
 
 .button {
+
     margin: 0.5%;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 30px;
+    font-size: 1.3em;
     width: 200px;
     height: 60px;
     background-color: #4200ad;
@@ -57,7 +59,7 @@
 .speed-slider {
   appearance: none;
   -webkit-appearance: none;
-  height: 1.5em;
+  height: 1.2em;
   width: 15em;
   background-color: #59575d;
   border-radius:10px;
@@ -70,8 +72,8 @@
 .speed-slider::-webkit-slider-thumb {
   appearance: none;
   -webkit-appearance: none;
-  height: 2em;
-  width: 2em;
+  height: 1.7em;
+  width: 1.7em;
   border-radius: 50%;
   background-color: #4c00c7;
   cursor: pointer;
@@ -80,12 +82,13 @@
 .slidecontainer {
   border: 1px solid white;
   display: flex;
+  flex-direction:row;
   gap: 5px;
   position: relative;
   background-color: transparent;
   padding: 5px;
   margin: 5px;
-  justify-content:space-between;
+  justify-content:right;
   align-items: center;
   
 }

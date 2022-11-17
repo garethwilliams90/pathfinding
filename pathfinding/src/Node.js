@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import './Node.css'
 
 export default function Node(props) {
@@ -31,8 +31,8 @@ export default function Node(props) {
       : props.isBeingConsidered
       ? 'node-considered'
       : '';
-    
 
+    
     return (
         <div 
             //className='node'

@@ -1,15 +1,16 @@
 // DIJKSTRA's ALGORITHM
-const SPEED = 20
+
 // Takes the startNode, endNode and the 2D array of all nodes
-export async function dijkstra(start, end, grid) {
+export async function dijkstra(start, end, grid, SPEED) {
     // Create a single array with all nodes & create a copy
     const nodes = linearNodes(grid)
     let nodesCopy = [...nodes]
+
     // Reset all nodes when function is called --> keep walls
     nodes.map(node => (node.isVisited = false,
-         node.isCurrent = false,
-         node.isBeingConsidered = false,
-         node.isPath = false))
+        node.isCurrent = false,
+        node.isBeingConsidered = false,
+        node.isPath = false))
     
 
     const nodesInVisitedOrder = []
@@ -46,13 +47,13 @@ export async function dijkstra(start, end, grid) {
         if (current.isEnd) return nodesInVisitedOrder
     
         // else --> update unvisited neighbours' distances 
-        updateUnvisitedNeighbours(current, grid)
+        updateUnvisitedNeighbours(current, grid, SPEED)
         current.isCurrent = false
     } 
 }
 
 // WORKING CORRECTLY
-async function updateUnvisitedNeighbours(current, grid) {
+async function updateUnvisitedNeighbours(current, grid, SPEED) {
     // First need to get all the unvisited neighbours
     const neighbours = getUnvisitedNeighbours(current, grid)
     
@@ -108,7 +109,7 @@ function sleep(ms) {
 }
 
 // WORKING CORRECTLY
-export async function shortestPath(endNode) {
+export async function shortestPath(endNode, SPEED) {
     // Uses the previousNode prop to calculate the shortest path
     // Dijkstra's algorithm took
     const shortestPath = []

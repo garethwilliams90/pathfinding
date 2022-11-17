@@ -13,11 +13,12 @@ export function Slider(props) {
     }
 
     return (
-        value,
+        console.log(value),
+        {value},
         <div className="slidecontainer">
             <div className='slider-text'>Speed: {`${value}`}</div>
             <input className="slider speed-slider"
-                disabled={props.algoOn}
+                
                 type='range'
                 min={1}
                 max={1000}
