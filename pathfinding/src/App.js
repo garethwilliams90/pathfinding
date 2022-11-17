@@ -1,7 +1,9 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Node from './Node'
-import {dijkstra, shortestPath} from './algorithms/dijkstra_final'
-import {aStar} from './algorithms/astar'
+import { dijkstra, shortestPath } from './algorithms/dijkstra'
+import { aStar } from './algorithms/astar'
+import {Slider, sliderValue} from './slider'
+
 
 import './style.css'
 
@@ -21,13 +23,13 @@ export default function Visualiser() {
 
     // On first render --> create 2D array of nodes
     useEffect(() => {
-        for(let col = 1; col < COLS+1; col++) {
+        for (let col = 1; col < COLS + 1; col++) {
             const currentRow = []
-            for (let row = 1; row < ROWS+1; row++) {
+            for (let row = 1; row < ROWS + 1; row++) {
                 const currentNode = {
                     col,
                     row,
-                    id: ((COLS) * (row-1)) + col,
+                    id: ((COLS) * (row - 1)) + col,
 
                     isStart: false,
                     isEnd: false,
@@ -44,16 +46,16 @@ export default function Visualiser() {
             }
             setNodes(prevState => [...prevState, currentRow])
         }
-    }, [])
-    
+    }, [setWalls])
+
     function handleClick(node) {
-        if (!startClicked && !endClicked) {
+        if (!node.isWall && !startClicked && !endClicked) {
             //console.log(`Setting start at ${node.id}`)
             node.isStart = true
             setStartClicked(true)
             setStartNode(node)
         }
-        else if (startClicked && !endClicked) {
+        else if (!node.isWall && startClicked && !endClicked) {
             //console.log(`Setting end at ${node.id}`)
             node.isEnd = true
             setEndClicked(true)
@@ -81,20 +83,38 @@ export default function Visualiser() {
         if (!node.isStart && !node.isEnd) {
             // console.log(`Set wall at ${node.id}`)
             node.isWall = !node.isWall
-            setWalls(prevWalls => [...prevWalls, node.id]) 
+            setWalls(prevWalls => [...prevWalls, node.id])
         }
     }
+
+    function generateWalls() {
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = 0; j < nodes[i].length; j++) {
+                const node = nodes[i][j]
+                // Check the node is not a start or end node
+                if (!node.isStart && !node.isEnd) {
+                    node.isWall = Math.round(Math.random() < 0.28)  
+                    node.isVisited = false
+                    node.isCurrent = false
+                    node.isBeingConsidered = false
+                    node.isPath = false
+                    setWalls(prevState => [...prevState, node.isWall ? node : null])
+                }  
+            }
+        }
+    }
+
 
     // Re-renders for walls
     useEffect(() => {
         //setNodes(prevState => [...prevState])
-    }, [walls])
-    
+    }, [walls, nodes])
+
 
     const nodeElements = nodes.map((row, rowIdx) => {
         return (
             <div key={rowIdx}
-            className="node-grid"
+                className="node-grid"
             >
                 {row.map(node => {
                     const {
@@ -109,16 +129,16 @@ export default function Visualiser() {
                         isBeingConsidered,
                         isPath,
                         distance,
-                        previousNode} = node
+                        previousNode } = node
                     return (
-                        <Node 
+                        <Node
                             key={id}
                             col={col}
                             row={row}
                             id={id}
 
                             isStart={isStart}
-                            isEnd={isEnd}  
+                            isEnd={isEnd}
                             isWall={isWall}
                             isVisited={isVisited}
                             isCurrent={isCurrent}
@@ -131,7 +151,7 @@ export default function Visualiser() {
                             handleDoubleClick={() => handleDoubleClick(node)}
                             setWall={() => setWall(node)}
                         ></Node>)
-                    })      
+                })
                 }
             </div>
         )
@@ -144,52 +164,94 @@ export default function Visualiser() {
     // Refresh rate of animations
     const [time, setTime] = useState(Date.now());
     useEffect(() => {
-    const interval = setInterval(() => setTime(Date.now()), 1);
-    return () => {
-        clearInterval(interval);
-    };
+        const interval = setInterval(() => setTime(Date.now()), 1);
+        return () => {
+            clearInterval(interval);
+        };
     }, []);
-  
+
 
     async function runDijkstra() {
         setAlgoOn(true)
         // Wait until dijkstra returns a value before going on to next line
-        const result = await dijkstra(startNode, endNode, nodes)
+        await dijkstra(startNode, endNode, nodes)
         setAlgoOn(false)
         shortestPath(endNode)
     }
 
-    function runAStar() {
+    function runAStar() {    
         setAlgoOn(true)
-        aStar(startNode, endNode, nodes)
+        aStar(startNode, endNode, nodes) 
+    }
+
+    // Total reset of all nodes and state
+    function resetBoard() {
+        setWalls([])
+        setStartClicked(false)
+        setEndClicked(false)
+        setStartNode({})
+        setEndNode({})
+        setAlgoOn(false)
+
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = 0; j < nodes[i].length; j++) {
+                const node = nodes[i][j]
+                node.isStart = false
+                node.isEnd = false
+                node.isWall = false
+                node.isVisited = false
+                node.isCurrent = false
+                node.isBeingConsidered = false
+                node.isPath = false         
+            }
+        }
     }
     
-    
-    
-
+   
     return (
         <div>
             <div className='nav'>
-                <button 
-                className='button dijkstra'
-                onClick={runDijkstra}
+                <button
+                        className='button reset'
+                        onClick={resetBoard}
+                        disabled={algoOn}
                 >
-                    Run Dijkstra's
+                    Reset Board
                 </button>
-                <button 
-                className='button astar'
-                onClick={runAStar}
+                <button
+                        className='button generate-walls'
+                        onClick={generateWalls}
+                        disabled={algoOn}
                 >
-                    Run A* Search
+                    Generate Walls
                 </button>
+                <button
+                    className='button algo-button dijkstra'
+                    onClick={runDijkstra}
+                    disabled={algoOn}
+                >
+                    Dijkstra's
+                </button>
+                <button
+                    className='button algo-button astar'
+                    onClick={runAStar}
+                    disabled={algoOn}
+                >
+                    A* Search
+                </button>
+
+                <Slider 
+                    algoOn={algoOn}
+                    
+                />
             </div>
-        
+
             <div className='grid'>
                 {nodeElements}
             </div>
-            
+
         </div>
-        
-        
+
+
     )
 }

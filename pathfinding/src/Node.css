@@ -20,6 +20,7 @@
     transform: scale(1.1);
     border-radius: 7px;
     z-index: 1;
+    cursor: pointer;
 }
 
 .node:active {
@@ -27,13 +28,15 @@
 }
 
 
-.node-end {
+.node-end {z-index: 1;
+
     background-color: #1500ff;
     animation: float 3s ease-in-out infinite;
 }
   
 .node-start {
 background-color: #158f4c;
+z-index: 1;
 animation: float 3s ease-in-out infinite;
 }
 
@@ -167,7 +170,7 @@ animation: float 3s ease-in-out infinite;
 
 @keyframes float {
 	0% {
-		box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+		box-shadow: 0 5px 15px 0px rgba(0,0,0,0.8);
 		transform: translatey(0px);
 	}
 	50% {
@@ -175,7 +178,7 @@ animation: float 3s ease-in-out infinite;
 		transform: translatey(-10px);
 	}
 	100% {
-		box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+		box-shadow: 0 5px 15px 0px rgba(0,0,0,0.8);
 		transform: translatey(0px);
 	}
 }
