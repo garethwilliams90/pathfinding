@@ -4,11 +4,12 @@
     background-color: #3b394a;
 
     margin: 0px;
+   
 
     position: relative;
     display: flex;
     
-    width: 2.3em;
+    width: 2.3rem;
     height: 2.3rem;
 
     align-items: center;
@@ -19,7 +20,7 @@
 .node:hover {
     transform: scale(1.1);
     border-radius: 7px;
-    z-index: 1;
+    z-index: 2;
     cursor: pointer;
 }
 
@@ -28,15 +29,15 @@
 }
 
 
-.node-end {z-index: 1;
-
+.node-end {
+    z-index: 1;
     background-color: #1500ff;
     animation: float 3s ease-in-out infinite;
 }
   
 .node-start {
 background-color: #158f4c;
-z-index: 1;
+z-index: 2;
 animation: float 3s ease-in-out infinite;
 }
 
@@ -45,8 +46,7 @@ animation: float 3s ease-in-out infinite;
 }
 
 .node-wall {
-    background-color: #020011;
-    
+    background-color: #020011;  
 }
 
 .node-considered {
@@ -66,9 +66,9 @@ animation: float 3s ease-in-out infinite;
     z-index: 2;
 
     animation-name: pathAnimation;
-    animation-duration: 0.7s;
+    animation-duration: 1.5s;
     animation-timing-function:ease-out;
-    animation-delay: 0;
+    animation-delay: 0s;
     animation-direction: alternate;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
@@ -86,6 +86,11 @@ animation: float 3s ease-in-out infinite;
     animation-fill-mode: forwards;
     animation-play-state: running;
   }
+
+.node-weight {
+    z-index: 2;
+    background-color: darkorange;
+}
   
   @keyframes visitedAnimation {
     0% {
@@ -106,12 +111,12 @@ animation: float 3s ease-in-out infinite;
   
     75% {
         transform: scale(0.8);
-        opacity: 0.8;
+        opacity: 0.7;
     }
 
     100% {
         transform: scale(1);
-        opacity: 1;
+        opacity: 0.8;
     }
   }
   
@@ -123,7 +128,7 @@ animation: float 3s ease-in-out infinite;
     }
     100% {
         transform: scale(1);
-        opacity: 1;
+        opacity: 0.8;
     }
   }
   
@@ -137,7 +142,7 @@ animation: float 3s ease-in-out infinite;
     100% {
         background-color: #ff006f;
         transform: scale(1);
-        opacity: 1;
+        opacity: 0.8;
     }
   }
 

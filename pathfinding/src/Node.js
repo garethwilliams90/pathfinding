@@ -16,21 +16,22 @@ export default function Node(props) {
     //     : "#3b394a"
     // }
 
-    const extraClassName = props.isPath ?
-        'node-path'
-      :props.isEnd
-      ? 'node-end'
-      : props.isCurrent
-      ? 'node-current'
-      : props.isStart
-      ? 'node-start'
-      : props.isWall
-      ? 'node-wall'
-      : props.isVisited
-      ? 'node-visited'
-      : props.isBeingConsidered
-      ? 'node-considered'
-      : '';
+    const extraClassName = props.isEnd ? 'node-end'
+    : props.isStart
+    ? 'node-start'
+    :props.isPath 
+    ? 'node-path'
+    : props.isCurrent
+    ? 'node-current'
+    : props.isWall
+    ? 'node-wall'
+    : props.isVisited
+    ? 'node-visited'
+    : props.weight > 0
+    ? `node-weight`
+    : props.isBeingConsidered
+    ? 'node-considered'
+    : '';
 
     
     return (
@@ -40,7 +41,9 @@ export default function Node(props) {
             //style={styles}
             onClick={props.handleClick}
             onDoubleClick={props.handleDoubleClick}
-            onDragEnter={props.setWall}
+            onKeyPress={props.handleKeyPress}
+            onDragEnter={props.handleDrag}
+            onMouseOver={props.handleMouseOver}
         >
            
         </div>

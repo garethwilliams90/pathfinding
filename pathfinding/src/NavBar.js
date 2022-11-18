@@ -10,7 +10,7 @@ export default function NavBar(props) {
                 <button
                         className='button reset'
                         onClick={props.resetBoard}
-                        disabled={props.algoOn}
+                        
                 >
                     Reset Board
                 </button>

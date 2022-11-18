@@ -59,7 +59,7 @@ async function updateUnvisitedNeighbours(current, grid, SPEED) {
     
     // Go through neighbours and re-assign their distances
     for (let i = 0; i < neighbours.length; i++) {
-        neighbours[i].distance = current.distance + 1
+        neighbours[i].distance = (current.distance + 1 + current.weight)
         neighbours[i].previousNode = current
         neighbours[i].isBeingConsidered = true
         await sleep(SPEED)
@@ -101,7 +101,7 @@ function linearNodes(grid) {
 // WORKING CORRECTLY
 function sortUnvisitedByDistance(unvisited) {
      // Shorter distance takes preferences
-     unvisited.sort((a, b) => (a.distance > b.distance) ? 1 : -1)
+     unvisited.sort((a, b) => ((a.distance+a.weight) > (b.distance+b.weight)) ? 1 : -1)
 }
 
 function sleep(ms) {
@@ -121,7 +121,6 @@ export async function shortestPath(endNode, SPEED) {
     }
 
     // Colour the nodes
-    
     for (let i = 0; i < shortestPath.length; i++) {
         await sleep(SPEED)
         shortestPath[i].isPath = true

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Node from './Node'
 import { dijkstra, shortestPath } from './algorithms/dijkstra'
-import { aStar } from './algorithms/astar'
+import { aStar, aStarPath } from './algorithms/astar'
 
 import NavBar from './NavBar'
 
@@ -9,12 +9,12 @@ import NavBar from './NavBar'
 import './style.css'
 
 export default function Visualiser(props) {
-    const SPEED = 20
     const ROWS = 15
     const COLS = 30
 
     const [nodes, setNodes] = useState([])
     const [walls, setWalls] = useState([])
+    const [weights, setWeights] = useState([])
 
     const [startClicked, setStartClicked] = useState(false)
     const [endClicked, setEndClicked] = useState(false)
@@ -22,6 +22,7 @@ export default function Visualiser(props) {
     const [endNode, setEndNode] = useState({})
 
     const [algoOn, setAlgoOn] = useState(false)
+    const [keyPressed, setKeyPressed] = useState(false)
 
     // On first render --> create 2D array of nodes
     useEffect(() => {
@@ -42,6 +43,7 @@ export default function Visualiser(props) {
                     isPath: false,
 
                     distance: Infinity,
+                    weight: 0,
                     previousNode: null,
                 }
                 currentRow.push(currentNode)
@@ -62,7 +64,7 @@ export default function Visualiser(props) {
             setEndNode(node)
         }
     }
-
+    
     function handleDoubleClick(node) {
         if (node.isStart) {
             node.isStart = !node.isStart
@@ -76,6 +78,26 @@ export default function Visualiser(props) {
         }
     }
 
+    // Drag draws walls or weights depending on whether Space bar is pressed
+    function handleDrag(node) {
+        if (keyPressed) setWeight(node)
+        else setWall(node)
+    }
+
+    function handleMouseOver(node) {
+        if (keyPressed) setWeight(node)
+    }
+
+   function setWeight(node) {
+        if (!node.isStart && !node.isEnd && !node.isWall) {
+            if (node.weight > 0) {
+                node.weight = 0
+            }
+            else node.weight += 4
+            setWeights(prevWeights => [...prevWeights, node.id])
+        }
+   }
+
     function setWall(node) {
         if (!node.isStart && !node.isEnd) { 
             node.isWall = !node.isWall
@@ -83,7 +105,11 @@ export default function Visualiser(props) {
         }
     }
 
+    // Generates new set of walls
     function generateWalls() {
+        setWalls([])
+        setWeights([])
+        setAlgoOn(false)
         for (let i = 0; i < nodes.length; i++) {
             for (let j = 0; j < nodes[i].length; j++) {
                 const node = nodes[i][j]
@@ -94,6 +120,9 @@ export default function Visualiser(props) {
                     node.isCurrent = false
                     node.isBeingConsidered = false
                     node.isPath = false
+                    node.distance = Infinity
+                    node.weight = 0
+                    node.previousNode = null
                     setWalls(prevState => [...prevState, node.isWall ? node : null])
                 }  
             }
@@ -103,7 +132,7 @@ export default function Visualiser(props) {
     // Re-renders for walls
     useEffect(() => {
         //setNodes(prevState => [...prevState])
-    }, [walls, nodes, startNode, endNode])
+    }, [walls, weights, nodes, startNode, endNode])
 
 
     const nodeElements = nodes.map((row, rowIdx) => {
@@ -124,6 +153,7 @@ export default function Visualiser(props) {
                         isBeingConsidered,
                         isPath,
                         distance,
+                        weight,
                         previousNode } = node
                     return (
                         <Node
@@ -140,12 +170,17 @@ export default function Visualiser(props) {
                             isBeingConsidered={isBeingConsidered}
                             isPath={isPath}
                             distance={distance}
+                            weight={weight}
                             previousNode={previousNode}
                             
                             handleClick={() => handleClick(node)}
                             handleDoubleClick={() => handleDoubleClick(node)}
-                            setWall={() => setWall(node)}
-                        ></Node>)
+                            handleDrag={() => handleDrag(node)}
+                            handleMouseOver={() => handleMouseOver(node)}
+                            //setWall={() => setWall(node)}
+                        >
+                            {node.weight > 0 ? <div className='node-weight'></div>: weight}
+                        </Node>)
                 })
                 }
             </div>
@@ -165,25 +200,40 @@ export default function Visualiser(props) {
         };
     }, []);
 
+    useEffect(() => {
+        const onESC = (ev) => {
+          if (ev.key === "w") {
+            setKeyPressed(prevState => !prevState)
+            console.log(`Weight key pressed: ${keyPressed}`)
+          }
+        }
+        window.addEventListener("keyup", onESC, false);
+        return () => {
+          window.addEventListener("keyup", onESC, false);
+        }
+      }, [])
 
     async function runDijkstra() {
         setAlgoOn(true)
         // Wait until dijkstra returns a value before going on to next line
         await dijkstra(startNode, endNode, nodes, props.sliderValue)
-        setAlgoOn(false)
         shortestPath(endNode, props.sliderValue)
+        setAlgoOn(false)
     }
 
-    function runAStar() {    
+    async function runAStar() {    
         setAlgoOn(true)
-        aStar(startNode, endNode, nodes) 
+        // Wait until aStar returns a value before visualising the path
+        await aStar(startNode, endNode, nodes, props.sliderValue) 
+        aStarPath(endNode, props.sliderValue)
+        setAlgoOn(false)
     }
 
     // Total reset of all nodes and state
     function resetBoard() {
         setWalls([])
+        setWeights([])
         setAlgoOn(false)
-
         for (let i = 0; i < nodes.length; i++) {
             for (let j = 0; j < nodes[i].length; j++) {
                 const node = nodes[i][j]
@@ -191,7 +241,10 @@ export default function Visualiser(props) {
                 node.isVisited = false
                 node.isCurrent = false
                 node.isBeingConsidered = false
-                node.isPath = false         
+                node.isPath = false  
+                node.weight = 0
+                node.previousNode = null
+                node.distance = Infinity     
             }
         }
     }
@@ -207,13 +260,9 @@ export default function Visualiser(props) {
                 resetBoard={resetBoard}
                 time={time}
             />
-
-            <div className='grid'>
+            <div className='grid'>  
                 {nodeElements}
             </div>
-
         </div>
-
-
     )
 }
