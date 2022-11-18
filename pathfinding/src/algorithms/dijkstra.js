@@ -44,7 +44,7 @@ export async function dijkstra(start, end, grid, SPEED) {
         unvisited.splice(0,1)
     
         // if current is endNode --> return 
-        if (current.isEnd) return nodesInVisitedOrder
+        if (current.isEnd || end.isBeingConsidered) return nodesInVisitedOrder
     
         // else --> update unvisited neighbours' distances 
         updateUnvisitedNeighbours(current, grid, SPEED)

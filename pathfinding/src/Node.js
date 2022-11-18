@@ -25,10 +25,10 @@ export default function Node(props) {
     ? 'node-current'
     : props.isWall
     ? 'node-wall'
-    : props.isVisited
-    ? 'node-visited'
     : props.weight > 0
     ? `node-weight`
+    : props.isVisited
+    ? 'node-visited'
     : props.isBeingConsidered
     ? 'node-considered'
     : '';

@@ -7,6 +7,9 @@ export default function NavBar(props) {
 
     return (
         <div className='nav'>
+                {props.keyPressed ? <div className='w-box weights-on'>W</div>
+                : <div className='w-box weights-off'>W</div>}
+        
                 <button
                         className='button reset'
                         onClick={props.resetBoard}

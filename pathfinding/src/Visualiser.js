@@ -10,7 +10,7 @@ import './style.css'
 
 export default function Visualiser(props) {
     const ROWS = 15
-    const COLS = 30
+    const COLS = 35
 
     const [nodes, setNodes] = useState([])
     const [walls, setWalls] = useState([])
@@ -205,6 +205,7 @@ export default function Visualiser(props) {
           if (ev.key === "w") {
             setKeyPressed(prevState => !prevState)
             console.log(`Weight key pressed: ${keyPressed}`)
+            
           }
         }
         window.addEventListener("keyup", onESC, false);
@@ -259,6 +260,7 @@ export default function Visualiser(props) {
                 runAStar={runAStar}
                 resetBoard={resetBoard}
                 time={time}
+                keyPressed={keyPressed}
             />
             <div className='grid'>  
                 {nodeElements}

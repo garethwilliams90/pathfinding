@@ -62,7 +62,7 @@ animation: float 3s ease-in-out infinite;
 }
 
 .node-path {
-    background-color: #ff006f;
+    
     z-index: 2;
 
     animation-name: pathAnimation;
@@ -88,7 +88,8 @@ animation: float 3s ease-in-out infinite;
   }
 
 .node-weight {
-    z-index: 2;
+    z-index: 1;
+    opacity: 0.9;
     background-color: darkorange;
 }
   
@@ -142,7 +143,7 @@ animation: float 3s ease-in-out infinite;
     100% {
         background-color: #ff006f;
         transform: scale(1);
-        opacity: 0.8;
+        opacity: 1;
     }
   }
 
