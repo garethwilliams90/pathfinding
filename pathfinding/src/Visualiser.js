@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Node from './Node'
 import { dijkstra, shortestPath } from './algorithms/dijkstra'
-import { aStar, aStarPath } from './algorithms/astar'
+import { aStar, aStarPath } from './algorithms/aStar'
 
 import NavBar from './NavBar'
 
@@ -23,6 +23,7 @@ export default function Visualiser(props) {
 
     const [algoOn, setAlgoOn] = useState(false)
     const [keyPressed, setKeyPressed] = useState(false)
+    const [mouseDown, setMouseDown] = useState(false)
 
     // On first render --> create 2D array of nodes
     useEffect(() => {
@@ -30,10 +31,14 @@ export default function Visualiser(props) {
             const currentRow = []
             for (let row = 1; row < ROWS + 1; row++) {
                 const currentNode = {
+                    // Positional
                     col,
                     row,
                     id: ((COLS) * (row - 1)) + col,
+                    previousNode: null,
+                    parentNode: null,
 
+                    // Booleans
                     isStart: false,
                     isEnd: false,
                     isWall: false,
@@ -42,9 +47,12 @@ export default function Visualiser(props) {
                     isBeingConsidered: false,
                     isPath: false,
 
+                    // Distances
                     distance: Infinity,
                     weight: 0,
-                    previousNode: null,
+                    fScore: Infinity,
+                    gScore: Infinity,
+                    hScore: Infinity,  
                 }
                 currentRow.push(currentNode)
             }
@@ -76,16 +84,27 @@ export default function Visualiser(props) {
             setEndClicked(false)
             setEndNode({})
         }
+        if (node.weight > 0) {
+            node.weight -= 2
+        }
     }
 
     // Drag draws walls or weights depending on whether Space bar is pressed
     function handleDrag(node) {
-        if (keyPressed) setWeight(node)
-        else setWall(node)
+        setWall(node)
     }
 
     function handleMouseOver(node) {
         if (keyPressed) setWeight(node)
+        if (mouseDown) setWall(node)
+    }
+
+    function handleMouseDown() {
+        setMouseDown(true)
+    }
+
+    function handleMouseUp() {
+        setMouseDown(false)
     }
 
    function setWeight(node) {
@@ -93,7 +112,7 @@ export default function Visualiser(props) {
             if (node.weight > 0) {
                 node.weight = 0
             }
-            else node.weight += 4
+            else node.weight += 2
             setWeights(prevWeights => [...prevWeights, node.id])
         }
    }
@@ -115,14 +134,18 @@ export default function Visualiser(props) {
                 const node = nodes[i][j]
                 // Check the node is not a start or end node
                 if (!node.isStart && !node.isEnd) {
+                    // Booleans
                     node.isWall = Math.round(Math.random() < 0.28)  
                     node.isVisited = false
                     node.isCurrent = false
                     node.isBeingConsidered = false
                     node.isPath = false
+                    // Distances
                     node.distance = Infinity
                     node.weight = 0
+                    // Positional
                     node.previousNode = null
+                    node.parentNode = null
                     setWalls(prevState => [...prevState, node.isWall ? node : null])
                 }  
             }
@@ -130,9 +153,8 @@ export default function Visualiser(props) {
     }
 
     // Re-renders for walls
-    useEffect(() => {
-        //setNodes(prevState => [...prevState])
-    }, [walls, weights, nodes, startNode, endNode])
+    // useEffect(() => {
+    // }, [walls, weights, nodes, startNode, endNode])
 
 
     const nodeElements = nodes.map((row, rowIdx) => {
@@ -142,9 +164,14 @@ export default function Visualiser(props) {
             >
                 {row.map(node => {
                     const {
+                        //Positional
                         col,
                         row,
                         id,
+                        previousNode,
+                        parentNode,
+
+                        // Boolean
                         isStart,
                         isEnd,
                         isWall,
@@ -152,16 +179,23 @@ export default function Visualiser(props) {
                         isCurrent,
                         isBeingConsidered,
                         isPath,
+
+                        //Distance
                         distance,
                         weight,
-                        previousNode } = node
+                        fScore,
+                        gScore,
+                        hScore} = node
                     return (
                         <Node
+                            // Positional
                             key={id}
                             col={col}
                             row={row}
                             id={id}
-
+                            previousNode={previousNode}
+                            parentNode={parentNode}
+                            // Booleans
                             isStart={isStart}
                             isEnd={isEnd}
                             isWall={isWall}
@@ -169,14 +203,19 @@ export default function Visualiser(props) {
                             isCurrent={isCurrent}
                             isBeingConsidered={isBeingConsidered}
                             isPath={isPath}
+                            // Distances
                             distance={distance}
                             weight={weight}
-                            previousNode={previousNode}
-                            
+                            fScore={fScore}
+                            gScore={gScore}
+                            hScore={hScore}
+                            // Events
                             handleClick={() => handleClick(node)}
                             handleDoubleClick={() => handleDoubleClick(node)}
                             handleDrag={() => handleDrag(node)}
                             handleMouseOver={() => handleMouseOver(node)}
+                            handleMouseDown={handleMouseDown}
+                            handleMouseUp={handleMouseUp}
                             //setWall={() => setWall(node)}
                         >
                             {node.weight > 0 ? <div className='node-weight'></div>: weight}
@@ -202,11 +241,7 @@ export default function Visualiser(props) {
 
     useEffect(() => {
         const onESC = (ev) => {
-          if (ev.key === "w") {
-            setKeyPressed(prevState => !prevState)
-            console.log(`Weight key pressed: ${keyPressed}`)
-            
-          }
+          if (ev.key === "w") setKeyPressed(prevState => !prevState)
         }
         window.addEventListener("keyup", onESC, false);
         return () => {
@@ -238,14 +273,21 @@ export default function Visualiser(props) {
         for (let i = 0; i < nodes.length; i++) {
             for (let j = 0; j < nodes[i].length; j++) {
                 const node = nodes[i][j]
+                // Booleans
                 node.isWall = false
                 node.isVisited = false
                 node.isCurrent = false
                 node.isBeingConsidered = false
                 node.isPath = false  
-                node.weight = 0
+                // Positional
                 node.previousNode = null
-                node.distance = Infinity     
+                node.parentNode = null
+                // Distance
+                node.distance = Infinity
+                node.weight = 0 
+                node.fScore = Infinity
+                node.gScore = Infinity
+                node.hScore = Infinity    
             }
         }
     }

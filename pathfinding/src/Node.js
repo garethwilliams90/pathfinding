@@ -44,6 +44,8 @@ export default function Node(props) {
             onKeyPress={props.handleKeyPress}
             onDragEnter={props.handleDrag}
             onMouseOver={props.handleMouseOver}
+            onMouseDown={props.handleMouseDown}
+            onMouseUp={props.handleMouseUp}
         >
            
         </div>

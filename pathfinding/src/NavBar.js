@@ -24,20 +24,23 @@ export default function NavBar(props) {
                 >
                     Generate Walls
                 </button>
-                <button
-                    className='button algo-button dijkstra'
-                    onClick={props.runDijkstra}
-                    disabled={props.algoOn}
-                >
-                    Dijkstra's
-                </button>
-                <button
-                    className='button algo-button astar'
-                    onClick={props.runAStar}
-                    disabled={props.algoOn}
-                >
-                    A* Search
-                </button>
+                <div className="algo-div">
+                    <button
+                        className='algo-button button dijkstra'
+                        onClick={props.runDijkstra}
+                        disabled={props.algoOn}
+                    >
+                        Dijkstra's
+                    </button>
+                    <button
+                        className='algo-button button astar'
+                        onClick={props.runAStar}
+                        disabled={props.algoOn}
+                    >
+                        A* Search
+                    </button>
+                </div>
+                
                 
         </div>
     )

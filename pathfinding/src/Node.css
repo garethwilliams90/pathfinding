@@ -20,7 +20,7 @@
 .node:hover {
     transform: scale(1.1);
     border-radius: 7px;
-    z-index: 2;
+    z-index: 5;
     cursor: pointer;
 }
 
@@ -28,16 +28,15 @@
     transform: scale(0.93);
 }
 
-
 .node-end {
-    z-index: 1;
+    z-index: 3;
     background-color: #1500ff;
     animation: float 3s ease-in-out infinite;
 }
   
 .node-start {
 background-color: #158f4c;
-z-index: 2;
+z-index: 3;
 animation: float 3s ease-in-out infinite;
 }
 
@@ -50,6 +49,7 @@ animation: float 3s ease-in-out infinite;
 }
 
 .node-considered {
+    z-index: 1;
    background-color: #5f19a1;
    animation-name: consideredAnimation;
    animation-duration: 0.3s;
@@ -62,7 +62,6 @@ animation: float 3s ease-in-out infinite;
 }
 
 .node-path {
-    
     z-index: 2;
 
     animation-name: pathAnimation;
@@ -76,6 +75,7 @@ animation: float 3s ease-in-out infinite;
 }
 
 .node-visited {
+    z-index: 1;
     background-color: #5a00ec;
     animation-name: visitedAnimation;
     animation-duration: 0.4s;
@@ -88,7 +88,6 @@ animation: float 3s ease-in-out infinite;
   }
 
 .node-weight {
-    z-index: 1;
     opacity: 0.9;
     background-color: darkorange;
 }

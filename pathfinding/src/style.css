@@ -1,50 +1,85 @@
 * {
-    background-color: #212329;
+    background-color: #101113;
 }
 
 .grid {
     position: relative;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    
-    border: 2px solid black;
-    padding: 0px;
-    
+    margin: 2rem;
 }
 
 .node-grid {
     background: transparent;
-    position: relative;  
+    position: relative;
 }
 
 .nav {
     position: relative;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content:center;
     align-items: center;
+    
+    margin: 1rem;
+    padding: 0.2rem;
+    border-radius: 0.4rem;
+    background-color: #24203b;
+}
 
-    margin: 10px;
-    padding: 5px;
-    border: 3px solid black;
-    background-color: #151821;
+.algo-div {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+  gap: 0.2rem;
+  align-items: center;
+  margin: 0.2rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  padding-top: 0.05rem;
+  padding-bottom: 0.05rem;
+  border-radius: 1rem;
+  background-color:#1500ff;
+  height: 3rem;
+}
+
+.algo-div > .algo-button {
+  opacity: 0.9;
+  background-color: #158f4c;
+  width: 8rem;
+  height: 2.5rem;
+  color: black;
+}
+
+.algo-div > .algo-button:hover {
+  transform: scale(1.03);
+}
+
+.algo-div > .algo-button:active {
+  transform: translateY(0.05rem);
 }
 
 .button {
-    margin: 0.5%;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 1.3em;
-    width: 200px;
-    height: 60px;
-    background-color: #4200ad;
-    border-radius: 10px;
-    border: none;
-    color: whitesmoke
+  opacity: 0.9;
+  margin: 0.3rem;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 1.3em;
+  width: 10rem;
+  height: 3rem;
+  background-color: #1500ff;
+  border-radius: 0.7rem;
+  border: none;
+  color: whitesmoke;
+  font-size: 1.3rem;
 }
 
 .button:hover {
-    background-color: #4c00c7; 
+    opacity: 1;
     cursor: pointer;
+    box-shadow: 0 0.2rem 0.2rem 0rem rgba(0,0,0,0.3);
 }
 
 .button:disabled {
@@ -52,16 +87,29 @@
 }
 
 .button:active {
-    transform: translateY(3px);
+    transform: translateY(0.1rem);
  }
+
+ .slidecontainer {
+  display: flex;
+  flex-direction:row;
+  position: relative;
+  background-color: transparent;
+  padding: 0.3rem;
+  margin: 0.3rem;
+  justify-content:center;
+  align-items: center;
+  
+}
 
 .speed-slider {
   appearance: none;
   -webkit-appearance: none;
-  height: 1.2em;
+  height: 0.7em;
   width: 15em;
-  background-color: #59575d;
-  border-radius:10px;
+  background-color: #3b394a;
+  border-radius:2rem;
+  margin-left: 1rem;
 }
 
 .speed-slider:disabled {
@@ -69,36 +117,29 @@
 }
 
 .speed-slider::-webkit-slider-thumb {
+  opacity: 0.9;
   appearance: none;
   -webkit-appearance: none;
-  height: 1.7em;
-  width: 1.7em;
+  height: 1.5em;
+  width: 1.5em;
   border-radius: 50%;
-  background-color: #4c00c7;
+  background-color: #1500ff;
   cursor: pointer;
 }
 
-.slidecontainer {
-  border: 1px solid white;
-  display: flex;
-  flex-direction:row;
-  gap: 5px;
-  position: relative;
-  background-color: transparent;
-  padding: 5px;
-  margin: 5px;
-  justify-content:right;
-  align-items: center;
-  
+.speed-slider::-webkit-slider-thumb:hover {
+  opacity: 1;
 }
 
 .slider-text {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   color: whitesmoke;
   background-color: transparent;
+  font-size: 1.1rem;
 }
 
 .w-box {
+  opacity: 0.5;
   font-size: 1.1rem;
   font-style: bold;
   font-weight: bolder;
@@ -117,7 +158,7 @@
   width: 2rem;
   height: 2rem;
 
-  box-shadow: 0 25px 15px 0px rgba(0,0,0,0.2);
+  box-shadow: 0 0.6rem 1rem 0rem rgba(0,0,0,0.5);
 }
 
 .weights-on {
@@ -129,5 +170,10 @@
   opacity: 0.5;
 }
 
-
-
+.top-bar {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

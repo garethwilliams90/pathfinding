@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import Visualiser from './Visualiser'
+import SocialIcons from './socialIcons'
 
 
 export default function App() {
@@ -22,21 +23,21 @@ export default function App() {
 
     return (
         <div>
-            <div>
+            <div className='top-bar'>
+                <SocialIcons />
                 <button className="theme" onClick={toggleTheme}>Toggle Theme</button>
-            </div>
-            <div className="slidecontainer">
-                <div className='slider-text'>Speed: {`${sliderValue}`}</div>
-                <input className="slider speed-slider"
-                    
-                    type='range'
-                    min={1}
-                    max={500}
-                    onChange={(event) => adjustSlider(event)}
-                    sliderValue={sliderValue}
-                    style={getBackgroundSize()}
-                    aria-label="Small"
-                    ></input>
+                <div className="slidecontainer">                 
+                    <div className='slider-text'>{`${sliderValue} ms`}</div>
+                    <input className="slider speed-slider"   
+                        type='range'
+                        min={1}
+                        max={500}
+                        onChange={(event) => adjustSlider(event)}
+                        sliderValue={sliderValue}
+                        style={getBackgroundSize()}
+                        aria-label="Small"
+                        ></input>
+                </div>
             </div>
             <Visualiser
                 sliderValue={sliderValue}
