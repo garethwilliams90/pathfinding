@@ -25,7 +25,11 @@ export default function App() {
         <div>
             <div className='top-bar'>
                 <SocialIcons />
-                <button className="theme" onClick={toggleTheme}>Toggle Theme</button>
+                <div className='title'>
+                    <div className="pathfinding-vis">Pathfinding Visualiser</div>
+                    <div className='by-gareth'>Code Written By Gareth Williams, 2022</div>
+                </div>
+                {/* <button className="theme" onClick={toggleTheme}>Toggle Theme</button> */}
                 <div className="slidecontainer">                 
                     <div className='slider-text'>{`${sliderValue} ms`}</div>
                     <input className="slider speed-slider"   
@@ -37,7 +41,7 @@ export default function App() {
                         style={getBackgroundSize()}
                         aria-label="Small"
                         ></input>
-                </div>
+                </div> 
             </div>
             <Visualiser
                 sliderValue={sliderValue}

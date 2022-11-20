@@ -43,6 +43,7 @@ export function primMaze(grid) {
                     // Remove wall between current cell and neighbour
                     removeWall(cell, randomNeighbour, grid)
                     randomNeighbour.isVisited = true
+                    
                     unvisited.splice(unvisited.indexOf(randomNeighbour),1)
                 }
                 // Make the neigbour the current cell and re-run

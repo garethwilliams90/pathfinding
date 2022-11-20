@@ -18,6 +18,13 @@ export default function NavBar(props) {
                     Reset Board
                 </button>
                 <button
+                        className='button clear-paths'
+                        onClick={props.clearPaths}
+                        
+                >
+                    Clear Paths
+                </button>
+                <button
                         className='button generate-walls'
                         onClick={props.generateWalls}
                         disabled={props.algoOn}
@@ -50,7 +57,7 @@ export default function NavBar(props) {
                     <button
                         className='algo-button button depth'
                         onClick={props.runAStar}
-                        disabled={props.algoOn}
+                        disabled={true}
                     >
                         Depth First
                     </button>

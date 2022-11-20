@@ -1,7 +1,6 @@
-// A-STAR ALGORITHM
+// ASTAR
 
-// Takes a start, end and grid, and returns best path
-export async function aStar(start, end, grid, SPEED) {
+export async function aStar(start, end, grid, speed) {
     // Create a single array with all nodes & create a copy
     const nodes = linearNodes(grid)
     // Reset all nodes when function is called --> keep walls
@@ -10,103 +9,93 @@ export async function aStar(start, end, grid, SPEED) {
         node.isBeingConsidered = false,
         node.isPath = false))
 
-    // Create an open set to store the queue
-    const openSet = []
-    const closedSet = []
+    var openList = []
+    var closedList = []
+    start.gScore = 0
+    openList.push(start)
 
-    // Add the startNode to the openSet
-    openSet.push(start)
-    console.log(openSet)
-    let count = 0
-    while (openSet.length > 0 || count > 1) {
-        count++
-        const current = getLowestFScore(openSet)
-        console.log(current)
-        current.isCurrent = true
-        current.isVisited = true
-        // If the current node is the endNode --> stop
-        if (current.isEnd) return
-        // Push current onto closedList
-        closedSet.push(current)
-        // Remove current from openSet
-        current.isCurrent = false
-        const currentIdx = openSet.indexOf(current)
-        openSet.splice(currentIdx, 1)
+    while (openList.length > 0) {
 
-        // Get the current neighbours & iterate
-        const neighbours = getNeighbours(current, grid)
-        //console.log(neighbours)
-        await sleep(SPEED)
-        for (let i = 0; i < neighbours.length; i++) {
-
-            let node = neighbours[i]
-            const gScore = getGScore(node)
-            const fScore = getFScore(node)
-            const hScore = getHScore(node, end)
-            const parentNode = getParent(node)
-
-            // If neighbour not in openSet
-            if (!openSet.includes(node)) {
-                // Save g, h, f, and parent node
-                node.gScore = gScore
-                node.fScore = fScore
-                node.hScore = hScore
-                node.parentNode = parentNode
-                // Add the neighbour to the openSet
-                openSet.push(node) 
+        // Grab the lowest f(x) to process next
+        var current = getLowestFScore(openList)
+        current.isBeingConsidered = true
+        
+        // End case -- result has been found, return the traced path
+        if (current.isEnd) {
+            var curr = current
+            curr.isCurrent = false
+            var ret = []
+            while (curr.previousNode) {
+                ret.push(curr)
+                await sleep(speed)
+                nodes.map(node => node.isCurrent=false)
+                ret.map(node => node.isPath = true)
+                curr = curr.previousNode
             }
-            // Node IS in openset AND new g is less than previous g 
-            if (openSet.includes(node) && gScore < node.gScore) {
-                // Save g and f and parent
-                node.gScore = gScore
-                node.fScore = fScore
-                node.parentNode = parentNode
+            return ret.reverse()
+        }
+
+        // Normal case -- move currentNode from open to closed, process each of its neighbors
+        openList.splice(openList.indexOf(current), 1)
+        closedList.push(current)
+        var neighbours = getNeighbours(current, grid)
+        for (let i = 0; i < neighbours.length; i++) {
+            var node = neighbours[i]
+            
+            if (node.isWall || closedList.includes(node)) {
+                // not a valid node to process, skip to next neighbor
+                continue
+            }
+            node.isCurrent = true
+            node.isBeingConsidered = true
+
+            // g score is the shortest distance from start to current node, we need to check if
+            // the path we have arrived at this neighbor is the shortest one we have seen yet
+            var gScore = current.gScore + 1 + current.weight
+            var gScoreIsBest = false
+
+            if (!openList.includes(node)) {
+                // This the the first time we have arrived at this node, it must be the best
+                // Also, we need to take the h (heuristic) score since we haven't done so yet
+                gScoreIsBest = true
+                node.hScore = getHScore(node, end)
+                openList.push(node)
+            }
+            else if (gScore < node.gScore) {
+                // We have already seen the node, but last time it had a worse g (distance from start)
+                gScoreIsBest = true
+                node.isCurrent = false
                 node.isBeingConsidered = true
+            }
+
+            if (gScoreIsBest) {
+                // Found an optimal (so far) path to this node.   Store info on how we got here and
+                //  just how good it really is...
+                await sleep(speed)
+                console.log("G-Score is best")
+                node.previousNode = current
+                node.gScore = gScore
+                node.fScore = node.gScore + node.hScore
+                node.isVisited = true
+                node.isCurrent = false
+                node.isBeingConsidered = false
             }
         }
     }
+    // No result was found -- empty array signifies failure to find path
+    console.log("Didn't find a solution")
+    return []
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+export async function aStarPath(end, speed) {
 
-function getParent(node) {
-
-}
-
-function getGScore(node) {
-
-}
-
-function getFScore(node) {
-    return (node.gScore + node.hScore)
-}
+} 
 
 // Manhattan distance
 function getHScore(node, end) {
     const x = Math.abs(node.col - end.col)
     const y = Math.abs(node.row - end.row)
     return x + y
-}
-
-// Gets all of the neighbours of the current node
-function getNeighbours(current, grid) {
-     const neighbours = []
-     const {row, col} = current
- 
-     // Above --> only get above if not at the top
-     if (row > 1) neighbours.push(grid[col-1][row-2])
-     // Below --> only get below if not at bottom
-     if (row < grid[0].length) neighbours.push(grid[col-1][row])
-     // Left --> only get left if not at far left col
-     if (col > 1) neighbours.push(grid[col-2][row-1])
-     // Right --> only get right if not at far right col
-     if (col < grid.length) neighbours.push(grid[col][row-1])
- 
-     // Neighbours must be: adjacent, not wall, not current, not visited
-     const filtered = neighbours.filter(node => !node.isWall && !node.isVisited && !node.isCurrent)
-     return filtered 
 }
 
 // sorts set by fScore and returns the first element 
@@ -121,6 +110,28 @@ function sortByFScore(set) {
     set.sort((a, b) => (a.fScore > b.fScore) ? 1 : -1)
     return set
 }
+// Gets all of the neighbours of the current node
+function getNeighbours(current, grid) {
+    const neighbours = []
+    const {row, col} = current
+
+    // Above --> only get above if not at the top
+    if (row > 1) neighbours.push(grid[col-1][row-2])
+    // Below --> only get below if not at bottom
+    if (row < grid[0].length) neighbours.push(grid[col-1][row])
+    // Left --> only get left if not at far left col
+    if (col > 1) neighbours.push(grid[col-2][row-1])
+    // Right --> only get right if not at far right col
+    if (col < grid.length) neighbours.push(grid[col][row-1])
+
+    // Neighbours must be: adjacent, not wall, not current, not visited
+    const filtered = neighbours.filter(node => !node.isWall && !node.isVisited && !node.isCurrent)
+    return filtered 
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 // WORKING CORRECTLY
 function linearNodes(grid) {
@@ -132,26 +143,4 @@ function linearNodes(grid) {
         }
     }
     return nodes
-}
-
-
-// WORKING CORRECTLY
-export async function aStarPath(endNode, SPEED) {
-    // Uses the previousNode prop to calculate the shortest path
-    // Dijkstra's algorithm took
-    const shortestPath = []
-    let currentNode = endNode
-    while (currentNode !== null) {
-        // Go down the line of previous nodes
-        shortestPath.unshift(currentNode)
-        currentNode = currentNode.previousNode
-    }
-
-    // Colour the nodes
-    for (let i = 0; i < shortestPath.length; i++) {
-        await sleep(SPEED)
-        shortestPath[i].current = true
-    }
-    console.log(shortestPath)
-    return shortestPath
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { dijkstra, shortestPath } from './algorithms/dijkstra'
-import { aStar, aStarPath } from './algorithms/aStarFinal'
+import { aStar, aStarPath } from './algorithms/aStar'
 import { depthFirst, depthFirstPath } from './algorithms/depthFirst'
 import { primMaze } from './primMaze'
 
@@ -62,12 +62,12 @@ export default function Visualiser(props) {
     }, [setWalls])
 
     function handleClick(node) {
-        if (!node.isWall && !startClicked && !endClicked) {
+        if (!node.isWall && !startClicked && !endClicked && !node.isEnd) {
             node.isStart = true
             setStartClicked(true)
             setStartNode(node)
         }
-        else if (!node.isWall && startClicked && !endClicked) {
+        else if (!node.isWall && startClicked && !endClicked && !node.isStart) {
             node.isEnd = true
             setEndClicked(true)
             setEndNode(node)
@@ -76,14 +76,21 @@ export default function Visualiser(props) {
     
     function handleDoubleClick(node) {
         if (node.isStart) {
+            // set the end node to the new start node
+            // and get ready to click the end node
             node.isStart = !node.isStart
-            setStartClicked(false)
-            setStartNode({})
+            endNode.isEnd = false
+            endNode.isStart = true
+            setEndNode({})
+            setEndClicked(false)
+            setStartNode(endNode)
+            setStartClicked(true)
         }
         if (node.isEnd) {
             node.isEnd = !node.isEnd
             setEndClicked(false)
             setEndNode({})
+            
         }
         if (node.weight > 0) {
             node.weight -= 2
@@ -159,7 +166,7 @@ export default function Visualiser(props) {
         setEndClicked(false)
         setEndNode({})
         setStartNode({})
-        primMaze(nodes)
+        primMaze(nodes, props.sliderValue)
     }
     // Re-renders for walls
     // useEffect(() => {
@@ -259,6 +266,7 @@ export default function Visualiser(props) {
       }, [])
 
     async function runDijkstra() {
+        clearPaths()
         setAlgoOn(true)
         // Wait until dijkstra returns a value before going on to next line
         await dijkstra(startNode, endNode, nodes, props.sliderValue)
@@ -266,7 +274,8 @@ export default function Visualiser(props) {
         setAlgoOn(false)
     }
 
-    async function runAStar() {    
+    async function runAStar() {  
+        clearPaths()  
         setAlgoOn(true)
         // Wait until aStar returns a value before visualising the path
         await aStar(startNode, endNode, nodes, props.sliderValue) 
@@ -275,6 +284,7 @@ export default function Visualiser(props) {
     }
 
     async function runDepthFirst() {
+        clearPaths()
         setAlgoOn(true)
         // Wait until aStar returns a value before visualising the path
         await depthFirst(startNode, endNode, nodes, props.sliderValue) 
@@ -282,16 +292,34 @@ export default function Visualiser(props) {
         setAlgoOn(false)
     }
 
-    // Total reset of all nodes and state
+    // Clear all path nodes
     function resetBoard() {
+        clearPaths()
         setWalls([])
         setWeights([])
+        setEndClicked(false)
+        setStartClicked(false)
+        setEndNode({})
+        setStartNode({})
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = 0; j < nodes[i].length; j++) {
+                const node = nodes[i][j]
+                node.isWall = false
+                node.weight = 0 
+                node.isStart = false
+                node.isEnd = false
+            }
+        }
+    }
+
+    // Total reset of all nodes and state
+    function clearPaths() {
         setAlgoOn(false)
         for (let i = 0; i < nodes.length; i++) {
             for (let j = 0; j < nodes[i].length; j++) {
                 const node = nodes[i][j]
                 // Booleans
-                node.isWall = false
+                //node.isWall = false
                 node.isVisited = false
                 node.isCurrent = false
                 node.isBeingConsidered = false
@@ -301,7 +329,7 @@ export default function Visualiser(props) {
                 node.parentNode = null
                 // Distance
                 node.distance = Infinity
-                node.weight = 0 
+                //node.weight = 0 
                 node.fScore = Infinity
                 node.gScore = Infinity
                 node.hScore = Infinity    
@@ -320,6 +348,7 @@ export default function Visualiser(props) {
                 runAStar={runAStar}
                 runDepthFirst={runDepthFirst}
                 resetBoard={resetBoard}
+                clearPaths={clearPaths}
                 time={time}
                 keyPressed={keyPressed}
             />

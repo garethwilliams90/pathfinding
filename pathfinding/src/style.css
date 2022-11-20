@@ -176,3 +176,22 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.title {
+  color:#1500ff;
+  font-size: 3.7vh;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  position:relative;
+  left: 5vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 50%
+}
+
+.by-gareth {
+  font-size: 2.3vh;
+  color:#158f4c;
+  margin-left: 1.2rem;
+}
