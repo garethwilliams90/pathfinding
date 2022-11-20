@@ -22,7 +22,15 @@ export default function NavBar(props) {
                         onClick={props.generateWalls}
                         disabled={props.algoOn}
                 >
-                    Generate Walls
+                    Random Walls
+                </button>
+                <button
+                        className='button generate-maze'
+                        onClick={props.generateMaze}
+                        disabled={props.algoOn}
+
+                >
+                    Generate Maze
                 </button>
                 <div className="algo-div">
                     <button
@@ -38,6 +46,13 @@ export default function NavBar(props) {
                         disabled={props.algoOn}
                     >
                         A* Search
+                    </button>
+                    <button
+                        className='algo-button button depth'
+                        onClick={props.runAStar}
+                        disabled={props.algoOn}
+                    >
+                        Depth First
                     </button>
                 </div>
                 

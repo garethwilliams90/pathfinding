@@ -23,17 +23,19 @@ export async function aStar(start, end, grid, SPEED) {
         const current = getLowestFScore(openSet)
         console.log(current)
         current.isCurrent = true
+        current.isVisited = true
         // If the current node is the endNode --> stop
         if (current.isEnd) return
         // Push current onto closedList
         closedSet.push(current)
         // Remove current from openSet
+        current.isCurrent = false
         const currentIdx = openSet.indexOf(current)
         openSet.splice(currentIdx, 1)
 
         // Get the current neighbours & iterate
         const neighbours = getNeighbours(current, grid)
-        console.log(neighbours)
+        //console.log(neighbours)
         await sleep(SPEED)
         for (let i = 0; i < neighbours.length; i++) {
 
@@ -133,6 +135,23 @@ function linearNodes(grid) {
 }
 
 
-export function aStarPath(end, SPEED) {
-    
+// WORKING CORRECTLY
+export async function aStarPath(endNode, SPEED) {
+    // Uses the previousNode prop to calculate the shortest path
+    // Dijkstra's algorithm took
+    const shortestPath = []
+    let currentNode = endNode
+    while (currentNode !== null) {
+        // Go down the line of previous nodes
+        shortestPath.unshift(currentNode)
+        currentNode = currentNode.previousNode
+    }
+
+    // Colour the nodes
+    for (let i = 0; i < shortestPath.length; i++) {
+        await sleep(SPEED)
+        shortestPath[i].current = true
+    }
+    console.log(shortestPath)
+    return shortestPath
 }

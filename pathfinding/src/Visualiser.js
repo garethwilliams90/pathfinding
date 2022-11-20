@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import Node from './Node'
 import { dijkstra, shortestPath } from './algorithms/dijkstra'
-import { aStar, aStarPath } from './algorithms/aStar'
+import { aStar, aStarPath } from './algorithms/aStarFinal'
+import { depthFirst, depthFirstPath } from './algorithms/depthFirst'
+import { primMaze } from './primMaze'
 
+import Node from './Node'
 import NavBar from './NavBar'
-
 
 import './style.css'
 
 export default function Visualiser(props) {
-    const ROWS = 15
-    const COLS = 35
+    const ROWS = 18
+    const COLS = 40
 
     const [nodes, setNodes] = useState([])
     const [walls, setWalls] = useState([])
@@ -151,7 +152,15 @@ export default function Visualiser(props) {
             }
         }
     }
-
+    // Generates a random maze of walls
+    function generateMaze() {
+        resetBoard()
+        setStartClicked(false)
+        setEndClicked(false)
+        setEndNode({})
+        setStartNode({})
+        primMaze(nodes)
+    }
     // Re-renders for walls
     // useEffect(() => {
     // }, [walls, weights, nodes, startNode, endNode])
@@ -265,6 +274,14 @@ export default function Visualiser(props) {
         setAlgoOn(false)
     }
 
+    async function runDepthFirst() {
+        setAlgoOn(true)
+        // Wait until aStar returns a value before visualising the path
+        await depthFirst(startNode, endNode, nodes, props.sliderValue) 
+        depthFirstPath(endNode, props.sliderValue)
+        setAlgoOn(false)
+    }
+
     // Total reset of all nodes and state
     function resetBoard() {
         setWalls([])
@@ -298,8 +315,10 @@ export default function Visualiser(props) {
             <NavBar 
                 algoOn={algoOn}
                 generateWalls={generateWalls}
+                generateMaze={generateMaze}
                 runDijkstra={runDijkstra}
                 runAStar={runAStar}
+                runDepthFirst={runDepthFirst}
                 resetBoard={resetBoard}
                 time={time}
                 keyPressed={keyPressed}
