@@ -1,7 +1,4 @@
 import React from 'react'
-import {Slider, sliderValue} from './slider'
-
-
 
 export default function NavBar(props) {
 
@@ -12,15 +9,14 @@ export default function NavBar(props) {
         
                 <button
                         className='button reset'
-                        onClick={props.resetBoard}
-                        
+                        onClick={props.resetBoard}    
                 >
                     Reset Board
                 </button>
                 <button
                         className='button clear-paths'
-                        onClick={props.clearPaths}
-                        
+                        onClick={props.clearPaths} 
+                        disabled={props.algoOn}
                 >
                     Clear Paths
                 </button>
@@ -35,7 +31,6 @@ export default function NavBar(props) {
                         className='button generate-maze'
                         onClick={props.generateMaze}
                         disabled={props.algoOn}
-
                 >
                     Generate Maze
                 </button>
@@ -61,9 +56,7 @@ export default function NavBar(props) {
                     >
                         Depth First
                     </button>
-                </div>
-                
-                
+                </div>     
         </div>
     )
 }

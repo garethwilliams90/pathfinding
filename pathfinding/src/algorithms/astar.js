@@ -87,10 +87,6 @@ export async function aStar(start, end, grid, speed) {
     return []
 }
 
-export async function aStarPath(end, speed) {
-
-} 
-
 // Manhattan distance
 function getHScore(node, end) {
     const x = Math.abs(node.col - end.col)

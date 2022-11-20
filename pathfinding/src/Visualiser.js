@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { dijkstra, shortestPath } from './algorithms/dijkstra'
-import { aStar, aStarPath } from './algorithms/aStar'
+import { aStar } from './algorithms/aStar'
 import { depthFirst, depthFirstPath } from './algorithms/depthFirst'
 import { primMaze } from './primMaze'
 
@@ -11,7 +11,7 @@ import './style.css'
 
 export default function Visualiser(props) {
     const ROWS = 18
-    const COLS = 40
+    const COLS = 42
 
     const [nodes, setNodes] = useState([])
     const [walls, setWalls] = useState([])
@@ -25,6 +25,7 @@ export default function Visualiser(props) {
     const [algoOn, setAlgoOn] = useState(false)
     const [keyPressed, setKeyPressed] = useState(false)
     const [mouseDown, setMouseDown] = useState(false)
+    const [reset, setReset] = useState(false)
 
     // On first render --> create 2D array of nodes
     useEffect(() => {
@@ -59,7 +60,7 @@ export default function Visualiser(props) {
             }
             setNodes(prevState => [...prevState, currentRow])
         }
-    }, [setWalls])
+    }, [setWalls, reset])
 
     function handleClick(node) {
         if (!node.isWall && !startClicked && !endClicked && !node.isEnd) {
@@ -279,7 +280,6 @@ export default function Visualiser(props) {
         setAlgoOn(true)
         // Wait until aStar returns a value before visualising the path
         await aStar(startNode, endNode, nodes, props.sliderValue) 
-        aStarPath(endNode, props.sliderValue)
         setAlgoOn(false)
     }
 
@@ -294,22 +294,15 @@ export default function Visualiser(props) {
 
     // Clear all path nodes
     function resetBoard() {
-        clearPaths()
+        setNodes([])
         setWalls([])
         setWeights([])
         setEndClicked(false)
         setStartClicked(false)
-        setEndNode({})
         setStartNode({})
-        for (let i = 0; i < nodes.length; i++) {
-            for (let j = 0; j < nodes[i].length; j++) {
-                const node = nodes[i][j]
-                node.isWall = false
-                node.weight = 0 
-                node.isStart = false
-                node.isEnd = false
-            }
-        }
+        setEndNode({})
+        setReset(prevState => !prevState)
+        setAlgoOn(false)
     }
 
     // Total reset of all nodes and state
