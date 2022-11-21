@@ -9,14 +9,15 @@ export default function NavBar(props) {
         
                 <button
                         className='button reset'
-                        onClick={props.resetBoard}    
+                        onClick={props.resetBoard}   
+                        disabled={props.aStarOn} 
                 >
                     Reset Board
                 </button>
                 <button
                         className='button clear-paths'
                         onClick={props.clearPaths} 
-                        disabled={props.algoOn}
+                        disabled={props.aStarOn}
                 >
                     Clear Paths
                 </button>

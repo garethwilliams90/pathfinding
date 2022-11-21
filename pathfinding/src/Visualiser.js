@@ -25,7 +25,7 @@ export default function Visualiser(props) {
     const [algoOn, setAlgoOn] = useState(false)
     const [keyPressed, setKeyPressed] = useState(false)
     const [mouseDown, setMouseDown] = useState(false)
-    const [reset, setReset] = useState(false)
+    const [aStarOn, setAStarOn] = useState(false)
 
     // On first render --> create 2D array of nodes
     useEffect(() => {
@@ -60,7 +60,7 @@ export default function Visualiser(props) {
             }
             setNodes(prevState => [...prevState, currentRow])
         }
-    }, [setWalls, reset])
+    }, [setWalls])
 
     function handleClick(node) {
         if (!node.isWall && !startClicked && !endClicked && !node.isEnd) {
@@ -278,8 +278,10 @@ export default function Visualiser(props) {
     async function runAStar() {  
         clearPaths()  
         setAlgoOn(true)
+        setAStarOn(true)
         // Wait until aStar returns a value before visualising the path
         await aStar(startNode, endNode, nodes, props.sliderValue) 
+        setAStarOn(false)
         setAlgoOn(false)
     }
 
@@ -294,15 +296,22 @@ export default function Visualiser(props) {
 
     // Clear all path nodes
     function resetBoard() {
-        setNodes([])
+        clearPaths()
         setWalls([])
         setWeights([])
         setEndClicked(false)
         setStartClicked(false)
-        setStartNode({})
         setEndNode({})
-        setReset(prevState => !prevState)
-        setAlgoOn(false)
+        setStartNode({})
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = 0; j < nodes[i].length; j++) {
+                const node = nodes[i][j]
+                node.isWall = false
+                node.weight = 0 
+                node.isStart = false
+                node.isEnd = false
+            }
+        }
     }
 
     // Total reset of all nodes and state
@@ -335,6 +344,7 @@ export default function Visualiser(props) {
         <div>
             <NavBar 
                 algoOn={algoOn}
+                aStarOn={aStarOn}
                 generateWalls={generateWalls}
                 generateMaze={generateMaze}
                 runDijkstra={runDijkstra}

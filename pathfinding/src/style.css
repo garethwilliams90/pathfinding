@@ -195,3 +195,47 @@
   color:#158f4c;
   margin-left: 1.2rem;
 }
+
+.inst {
+  background-color: transparent;
+  padding: 0.2vw;
+}
+
+.instruct-box {
+  z-index: 10;
+  position: absolute;
+  display: flex;
+  top: 20%;
+  left: 20%;
+  border: 0.1rem solid white;
+  border-radius: 1rem;
+  width: 60%;
+  height: 70%;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  background-color: #140159;
+}
+
+.instruct-inner-box {
+  font-size: 1.6vh;
+  position: relative;
+  display: block;
+  padding: 1vh;
+  margin: 2vw;
+  border-radius: 1rem; 
+  background-color: #c3c0db;
+  color: black;
+  box-shadow: 1vw 1vh rgba(0,0,0,0.5);
+
+  width: 100%;
+  height: 90%;
+}
+
+.img {
+  position: relative;
+  width: 3.5vw;
+  height: 2.7vh;
+
+}

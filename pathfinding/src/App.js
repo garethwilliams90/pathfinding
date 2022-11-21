@@ -1,11 +1,17 @@
 import React, {useState} from 'react'
 import Visualiser from './Visualiser'
 import SocialIcons from './socialIcons'
+import Instructions from './instructions'
 
 
 export default function App() {
     const [sliderValue, setSliderValue] = useState(50)
     const [theme, setTheme] = useState('dark')
+    const [instructions, setInstructions] = useState(false)
+
+    function toggleInstructions() {
+        setInstructions(prevState => !prevState)
+    }
 
     function toggleTheme() {
         setTheme(theme === 'dark' ? 'light' : 'dark')
@@ -23,8 +29,17 @@ export default function App() {
 
     return (
         <div>
+            <Instructions
+                    instructions={instructions}
+                />
             <div className='top-bar'>
                 <SocialIcons />
+                <button
+                    className='button instructions'
+                    onClick={toggleInstructions}
+                    >Instructions
+                </button>
+                
                 <div className='title'>
                     <div className="pathfinding-vis">Pathfinding Visualiser</div>
                     <div className='by-gareth'>Code Written By Gareth Williams, 2022</div>
