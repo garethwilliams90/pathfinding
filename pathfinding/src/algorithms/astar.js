@@ -38,6 +38,7 @@ export async function aStar(start, end, grid, speed) {
         // Normal case -- move currentNode from open to closed, process each of its neighbors
         openList.splice(openList.indexOf(current), 1)
         closedList.push(current)
+        closedList.map(node => node.isVisited = true)
         var neighbours = getNeighbours(current, grid)
         for (let i = 0; i < neighbours.length; i++) {
             var node = neighbours[i]

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { dijkstra, shortestPath } from './algorithms/dijkstra'
 import { aStar } from './algorithms/aStar'
-import { depthFirst, depthFirstPath } from './algorithms/depthFirst'
+import { depthFirst } from './algorithms/depthFirst'
 import { primMaze } from './primMaze'
 
 import Node from './Node'
@@ -290,7 +290,6 @@ export default function Visualiser(props) {
         setAlgoOn(true)
         // Wait until aStar returns a value before visualising the path
         await depthFirst(startNode, endNode, nodes, props.sliderValue) 
-        depthFirstPath(endNode, props.sliderValue)
         setAlgoOn(false)
     }
 

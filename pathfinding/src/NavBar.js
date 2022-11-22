@@ -52,8 +52,8 @@ export default function NavBar(props) {
                     </button>
                     <button
                         className='algo-button button depth'
-                        onClick={props.runAStar}
-                        disabled={true}
+                        onClick={props.runDepthFirst}
+                        disabled={props.algoOn}
                     >
                         Depth First
                     </button>
