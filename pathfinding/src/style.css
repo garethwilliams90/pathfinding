@@ -23,8 +23,8 @@
     justify-content:center;
     align-items: center;
     
-    margin: 1rem;
-    padding: 0.2rem;
+    margin: 1%;
+    padding: 0.2%;
     border-radius: 0.4rem;
     background-color: #24203b;
 }
@@ -34,24 +34,25 @@
   display: flex;
   flex-direction: row;
   justify-content:space-between;
-  gap: 0.2rem;
+  gap: 0.2%;
   align-items: center;
-  margin: 0.2rem;
-  padding-left: 0.3rem;
-  padding-right: 0.3rem;
-  padding-top: 0.05rem;
-  padding-bottom: 0.05rem;
+  margin: 0.2%;
+  padding-left: 0.3%;
+  padding-right: 0.3%;
+  padding-top: 0.05%;
+  padding-bottom: 0.05%;
   border-radius: 1rem;
   background-color:#1500ff;
-  height: 3rem;
+  height: 3%;
 }
 
 .algo-div > .algo-button {
   opacity: 0.9;
   background-color: #158f4c;
-  width: 8rem;
-  height: 2.5rem;
+  width: 7vw;
+  height: 5vh;
   color: black;
+  font-size: 1.1vw;
 }
 
 .algo-div > .algo-button:hover {
@@ -59,21 +60,21 @@
 }
 
 .algo-div > .algo-button:active {
-  transform: translateY(0.05rem);
+  transform: translateY(0.05%);
 }
 
 .button {
   opacity: 0.9;
-  margin: 0.3rem;
+  margin: 0.5vw;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  font-size: 1.3em;
-  width: 10rem;
-  height: 3rem;
+  font-size: 1%;
+  width: 9vw;
+  height: 5.5vh;
   background-color: #1500ff;
-  border-radius: 0.7rem;
+  border-radius: 10px;
   border: none;
   color: whitesmoke;
-  font-size: 1.3rem;
+  font-size: 1.2vw;
 }
 
 .button:hover {
@@ -95,8 +96,8 @@
   flex-direction:row;
   position: relative;
   background-color: transparent;
-  padding: 0.3rem;
-  margin: 0.3rem;
+  padding: 0.2vw;
+  margin: 0.2vh;
   justify-content:center;
   align-items: center;
 }
@@ -104,11 +105,11 @@
 .speed-slider {
   appearance: none;
   -webkit-appearance: none;
-  height: 0.7em;
-  width: 15em;
+  height: 0.6vh;
+  width: 12vw;
   background-color: #3b394a;
   border-radius:2rem;
-  margin-left: 1rem;
+  margin-left: 1vw;
 }
 
 .speed-slider:disabled {
@@ -119,8 +120,8 @@
   opacity: 0.9;
   appearance: none;
   -webkit-appearance: none;
-  height: 1.5em;
-  width: 1.5em;
+  height: 1.2vw;
+  width: 1.2vw;
   border-radius: 50%;
   background-color: #1500ff;
   cursor: pointer;
@@ -134,19 +135,19 @@
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   color: whitesmoke;
   background-color: transparent;
-  font-size: 1.1rem;
+  font-size: 1.3vw;
 }
 
 .w-box {
   opacity: 0.5;
-  font-size: 1.1rem;
+  font-size: 1.1vw;
   font-style: bold;
   font-weight: bolder;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   border-radius: 15%;
   background-color: darkorange;
-  margin-right: 3rem;
-  padding: 0.1rem;
+  margin-right: 3vw;
+  padding: 0.1vw;
 
   position: relative;
   display: flex;
@@ -154,8 +155,8 @@
   align-items: center;
   text-align: center;
 
-  width: 2rem;
-  height: 2rem;
+  width: 2.7vw;
+  height: 2.7vw;
 
   box-shadow: 0 0.6rem 1rem 0rem rgba(0,0,0,0.5);
 }
@@ -179,7 +180,7 @@
 
 .title {
   color:#1500ff;
-  font-size: 3.7vh;
+  font-size: 2vw;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   position:relative;
   left: 5vw;
@@ -191,9 +192,9 @@
 }
 
 .by-gareth {
-  font-size: 2.3vh;
+  font-size: 1.2vw;
   color:#158f4c;
-  margin-left: 1.2rem;
+  margin-left: 1.5vw;
 }
 
 .inst {
@@ -206,11 +207,11 @@
   position: absolute;
   display: flex;
   top: 20%;
-  left: 20%;
+  left: 10%;
   border: 0.1rem solid white;
   border-radius: 1rem;
-  width: 60%;
-  height: 70%;
+  width: 80vw;
+  height: 70vh;
   align-items: center;
   justify-content: center;
   color: white;
@@ -236,6 +237,6 @@
 .img {
   position: relative;
   width: 3.5vw;
-  height: 2.7vh;
+  height: 3vh;
 
 }

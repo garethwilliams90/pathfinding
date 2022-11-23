@@ -2,10 +2,8 @@
     border: 0.5px solid black;
     border-radius: 0px;
     background-color: #3b394a;
-
     margin: 0px;
    
-
     position: relative;
     display: flex;
     
@@ -19,7 +17,7 @@
 
 .node:hover {
     transform: scale(1.1);
-    border-radius: 7px;
+    border-radius: 20%;
     z-index: 5;
     cursor: pointer;
 }
@@ -50,9 +48,9 @@ animation: float 3s ease-in-out infinite;
 
 .node-considered {
     z-index: 1;
-   background-color: #5f19a1;
-   animation-name: consideredAnimation;
-   animation-duration: 0.3s;
+    background-color: #5f19a1;
+    animation-name: consideredAnimation;
+    animation-duration: 0.3s;
     animation-timing-function: ease-out;
     animation-delay: 0;
     animation-direction: alternate;
@@ -116,7 +114,7 @@ animation: float 3s ease-in-out infinite;
 
     100% {
         transform: scale(1);
-        opacity: 0.8;
+        opacity: 1;
     }
   }
   
@@ -128,7 +126,7 @@ animation: float 3s ease-in-out infinite;
     }
     100% {
         transform: scale(1);
-        opacity: 0.8;
+        opacity: 1;
     }
   }
   
