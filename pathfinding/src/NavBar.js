@@ -55,7 +55,14 @@ export default function NavBar(props) {
                         onClick={props.runAStar}
                         disabled={props.algoOn}
                     >
-                        A* Search
+                        Manhattan A*
+                    </button>
+                    <button
+                        className='algo-button button astar'
+                        onClick={props.runAStarE}
+                        disabled={props.algoOn}
+                    >
+                        Eucliean A*
                     </button>
                     <button
                         className='algo-button button depth'

@@ -74,7 +74,7 @@ animation: float 3s ease-in-out infinite;
 
 .node-visited {
     z-index: 1;
-    background-color: #5a00ec;
+    background-color: #4e00cd;
     animation-name: visitedAnimation;
     animation-duration: 0.4s;
     animation-timing-function: ease-out;
