@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { dijkstra, shortestPath } from './algorithms/dijkstra'
+import { dijkstraDirect, directShortestPath} from './algorithms/dijkstraModified'
 import { aStar } from './algorithms/aStar'
 import { depthFirst } from './algorithms/depthFirst'
 import { primMaze } from './primMaze'
@@ -275,6 +276,15 @@ export default function Visualiser(props) {
         setAlgoOn(false)
     }
 
+    async function runDijkstraDirect() {
+        clearPaths()
+        setAlgoOn(true)
+        // Wait until dijkstra returns a value before going on to next line
+        await dijkstraDirect(startNode, endNode, nodes, props.sliderValue)
+        directShortestPath(endNode, props.sliderValue)
+        setAlgoOn(false)
+    }
+
     async function runAStar() {  
         clearPaths()  
         setAlgoOn(true)
@@ -347,6 +357,7 @@ export default function Visualiser(props) {
                 generateWalls={generateWalls}
                 generateMaze={generateMaze}
                 runDijkstra={runDijkstra}
+                runDijkstraDirect={runDijkstraDirect}
                 runAStar={runAStar}
                 runDepthFirst={runDepthFirst}
                 resetBoard={resetBoard}
