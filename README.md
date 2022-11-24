@@ -20,9 +20,9 @@ This is a weighted informed search algorithm.
 
 A* uses the position of the end node to inform the search if it is going in roughly the correct direction. **A* always guarantees the optimal path** and is typically extremely fast and uses less search time than Dijkstra's.
 
-### The Manhattan heuristic, calculates the distance from the current node, to the end node by adding vertical and horiztonal distance simply. https://en.wikipedia.org/wiki/Taxicab_geometry
+*The Manhattan heuristic*, calculates the distance from the current node, to the end node by adding vertical and horiztonal distance simply. https://en.wikipedia.org/wiki/Taxicab_geometry
 
-### The Euclidean heuristic find the distance based on Euclidean distance (diagonal distance). Typically end up in a path that emulates as the crow might fly rather than along roads. In the case where diagonal paths are allowed, this would end up in an even better solution than a typical optimal solution. https://en.wikipedia.org/wiki/Taxicab_geometry, https://en.wikipedia.org/wiki/Euclidean_geometry
+*The Euclidean heuristic* find the distance based on Euclidean distance (diagonal distance). Typically end up in a path that emulates as the crow might fly rather than along roads. In the case where diagonal paths are allowed, this would end up in an even better solution than a typical optimal solution. https://en.wikipedia.org/wiki/Taxicab_geometry, https://en.wikipedia.org/wiki/Euclidean_geometry
 
 ## Depth First Search: https://en.wikipedia.org/wiki/Depth-first_search
 This is an unweighted, uninformed search algorithm.
