@@ -8,16 +8,17 @@
 # The Algorithms: 
 
 ## Dijkstra: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
-Dijkstra's algorithm is a weighted, uninformed searched algorithm
-Dijkstras algorithm searches evenly in all directions and will always find the optimal solution for both distance and time (if the path is weighted). This is quite similar to the algorithm mapping softwares use find the shortest journey between two destinations, taking traffic and speed limit into account etc.
+Dijkstra's algorithm is a weighted, uninformed searched algorithm.
+Dijkstras algorithm searches evenly in all directions and will ** always find the optimal solution ** for both distance and time (if the path is weighted). This is quite similar to the algorithm mapping softwares use find the shortest journey between two destinations, taking traffic and speed limit into account etc.
 
-## Modified Dijkstra: This is a weighted, informed search algorithm.
-I implemented this algorithm myself and is heavily based off Dijkstra's algorithm. The difference being that the current node being searched takes it's neighbours into account based on how close the neighbours are to the end node. When used in the open grid, the algorithm finds the optimal path faster, and with less search time than regular Dijkstra. However, when multiple paths are included and with walls added - this algorithm does not guarantee the shortest path.
+## Modified Dijkstra: 
+This is a weighted, informed search algorithm.
+I implemented this algorithm myself and is heavily based off Dijkstra's algorithm. The difference being that the current node being searched takes it's neighbours into account based on how close the neighbours are to the end node. When used in the open grid, the algorithm finds the optimal path faster, and with less search time than regular Dijkstra. However, when multiple paths are included and with walls added - this algorithm ** does not guarantee the shortest path. **
 
 ## A* Search (Manhattan): https://en.wikipedia.org/wiki/A*_search_algorithm
 This is a weighted informed search algorithm.
 
-A* uses the position of the end node to inform the search if it is going in roughly the correct direction. A* always guarantees the optimal path and is typically extremely fast and uses less search time than Dijkstra's.
+A* uses the position of the end node to inform the search if it is going in roughly the correct direction. ** A* always guarantees the optimal path ** and is typically extremely fast and uses less search time than Dijkstra's.
 
 ### The Manhattan heuristic, calculates the distance from the current node, to the end node by adding vertical and horiztonal distance simply. https://en.wikipedia.org/wiki/Taxicab_geometry
 
