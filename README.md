@@ -24,7 +24,7 @@ A* uses the position of the end node to inform the search if it is going in roug
 
 ### The Euclidean heuristic find the distance based on Euclidean distance (diagonal distance). Typically end up in a path that emulates as the crow might fly rather than along roads. In the case where diagonal paths are allowed, this would end up in an even better solution than a typical optimal solution. https://en.wikipedia.org/wiki/Taxicab_geometry, https://en.wikipedia.org/wiki/Euclidean_geometry
 
-## Depth First Search:
+## Depth First Search: https://en.wikipedia.org/wiki/Depth-first_search
 This is an unweighted, uninformed search algorithm.
 Depth first search explores all sub- branches of one branch then progresses to the next branch. It is illustrated best when used with the Maze feature as you will see it search all the possible routes of the maze before stopping at the end node.
 **It does not guarantee the optimal path** unless it is in a one way maze. Sometimes depth first search will produce an extremely fast, correct solution, but this is luck based. 
