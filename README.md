@@ -18,7 +18,7 @@ I implemented this algorithm myself and is heavily based off Dijkstra's algorith
 ## A* Search (Manhattan): https://en.wikipedia.org/wiki/A*_search_algorithm
 This is a weighted informed search algorithm.
 
-A* uses the position of the end node to inform the search if it is going in roughly the correct direction. **A* always guarantees the optimal path** and is typically extremely fast and uses less search time than Dijkstra's.
+A* uses the position of the end node to inform the search if it is going in roughly the correct direction. **It always guarantees the optimal path** and is typically extremely fast and uses less search time than Dijkstra's.
 
 *The Manhattan heuristic*, calculates the distance from the current node, to the end node by adding vertical and horiztonal distance simply. https://en.wikipedia.org/wiki/Taxicab_geometry
 
