@@ -83,7 +83,7 @@ function getUnvisitedNeighbours(current, grid) {
     if (col > 1) neighbours.push(grid[col-2][row-1])
     // Right --> only get right if not at far right col
     if (col < grid.length) neighbours.push(grid[col][row-1])
-
+    
     // Neighbours must be: adjacent, not wall, not current, not visited
     const filtered = neighbours.filter(node => !node.isWall && !node.isVisited && !node.isCurrent)
     return filtered 
