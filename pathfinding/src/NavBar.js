@@ -10,6 +10,7 @@ export default function NavBar(props) {
                 <div className='diagonals'>
                     Diagonals
                     <input 
+                        className='checkbox'
                         type='checkbox' 
                         checked={props.diagOn}
                         onChange={props.handleCheck}
