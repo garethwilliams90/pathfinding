@@ -1,7 +1,7 @@
 // DIJKSTRA's ALGORITHM
 
 // Takes the startNode, endNode and the 2D array of all nodes
-export async function dijkstra(start, end, grid, SPEED) {
+export async function dijkstra(start, end, grid, SPEED, diagOn) {
     // Create a single array with all nodes & create a copy
     const nodes = linearNodes(grid)
     let nodesCopy = [...nodes]
@@ -50,15 +50,16 @@ export async function dijkstra(start, end, grid, SPEED) {
             return nodesInVisitedOrder
         }
         // else --> update unvisited neighbours' distances 
-        updateUnvisitedNeighbours(current, grid, SPEED)
+        updateUnvisitedNeighbours(current, grid, SPEED, diagOn)
         current.isCurrent = false
     } 
 }
 
 // WORKING CORRECTLY
-async function updateUnvisitedNeighbours(current, grid, SPEED) {
+async function updateUnvisitedNeighbours(current, grid, SPEED, diagOn) {
     // First need to get all the unvisited neighbours
-    const neighbours = getUnvisitedNeighbours(current, grid)
+    const neighbours = getUnvisitedNeighbours(current, grid, diagOn)
+    //sortUnvisitedByDistance(neighbours)
     
     // Go through neighbours and re-assign their distances
     for (let i = 0; i < neighbours.length; i++) {
@@ -70,11 +71,22 @@ async function updateUnvisitedNeighbours(current, grid, SPEED) {
 }
 
 // WORKING CORRECTLY
-function getUnvisitedNeighbours(current, grid) {
+function getUnvisitedNeighbours(current, grid, diagOn) {
     // Gets all the unvisited neighbours of the current node
     const neighbours = []
-    const {row, col} = current
+    const {row, col, isBeingConsidered} = current
 
+    // Get the diagonal neighbours
+    if (diagOn) {
+        // NorthWest
+        if (row > 1 && col > 1) neighbours.unshift(grid[col-2][row-2])
+        // NorthEast
+        if (row > 1 && col < grid.length) neighbours.unshift(grid[col][row-2])
+        // SouthWest
+        if (row < grid[0].length && col > 1) neighbours.unshift(grid[col-2][row])
+        // SouthEast
+        if (row < grid[0].length && col < grid.length) neighbours.unshift(grid[col][row])
+    }
     // Above --> only get above if not at the top
     if (row > 1) neighbours.push(grid[col-1][row-2])
     // Below --> only get below if not at bottom
@@ -85,7 +97,7 @@ function getUnvisitedNeighbours(current, grid) {
     if (col < grid.length) neighbours.push(grid[col][row-1])
     
     // Neighbours must be: adjacent, not wall, not current, not visited
-    const filtered = neighbours.filter(node => !node.isWall && !node.isVisited && !node.isCurrent)
+    const filtered = neighbours.filter(node => !node.isBeingConsidered && !node.isWall && !node.isVisited && !node.isCurrent)
     return filtered 
 }
 

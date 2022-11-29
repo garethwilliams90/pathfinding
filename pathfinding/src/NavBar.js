@@ -6,6 +6,16 @@ export default function NavBar(props) {
         <div className='nav'>
                 {props.keyPressed ? <div className='w-box weights-on'>W</div>
                 : <div className='w-box weights-off'>W</div>}
+
+                <div className='diagonals'>
+                    Diagonals
+                    <input 
+                        type='checkbox' 
+                        checked={props.diagOn}
+                        onChange={props.handleCheck}
+                    >
+                    </input>
+                </div>
         
                 <button
                         className='button reset'

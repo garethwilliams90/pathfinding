@@ -28,6 +28,7 @@ export default function Visualiser(props) {
     const [keyPressed, setKeyPressed] = useState(false)
     const [mouseDown, setMouseDown] = useState(false)
     const [aStarOn, setAStarOn] = useState(false)
+    const [diagOn, setDiagOn] = useState(false)
 
     // On first render --> create 2D array of nodes
     useEffect(() => {
@@ -63,6 +64,10 @@ export default function Visualiser(props) {
             setNodes(prevState => [...prevState, currentRow])
         }
     }, [setWalls])
+
+    function handleCheck() {
+        setDiagOn(prevState => !prevState)
+    }
 
     function handleClick(node) {
         if (!node.isWall && !startClicked && !endClicked && !node.isEnd) {
@@ -272,7 +277,7 @@ export default function Visualiser(props) {
         clearPaths()
         setAlgoOn(true)
         // Wait until dijkstra returns a value before going on to next line
-        await dijkstra(startNode, endNode, nodes, props.sliderValue)
+        await dijkstra(startNode, endNode, nodes, props.sliderValue, diagOn)
         shortestPath(endNode, props.sliderValue)
         setAlgoOn(false)
     }
@@ -291,7 +296,7 @@ export default function Visualiser(props) {
         setAlgoOn(true)
         setAStarOn(true)
         // Wait until aStar returns a value before visualising the path
-        await aStar(startNode, endNode, nodes, props.sliderValue) 
+        await aStar(startNode, endNode, nodes, props.sliderValue, diagOn) 
         setAStarOn(false)
         setAlgoOn(false)
     }
@@ -301,7 +306,7 @@ export default function Visualiser(props) {
         setAlgoOn(true)
         setAStarOn(true)
         // Wait until aStar returns a value before visualising the path
-        await aStarE(startNode, endNode, nodes, props.sliderValue) 
+        await aStarE(startNode, endNode, nodes, props.sliderValue, diagOn) 
         setAStarOn(false)
         setAlgoOn(false)
     }
@@ -376,6 +381,8 @@ export default function Visualiser(props) {
                 clearPaths={clearPaths}
                 time={time}
                 keyPressed={keyPressed}
+                diagOn={diagOn}
+                handleCheck={handleCheck}
             />
             <div className='grid'>  
                 {nodeElements}

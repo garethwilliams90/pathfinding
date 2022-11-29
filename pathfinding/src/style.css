@@ -242,3 +242,9 @@
   height: 3vh;
 
 }
+
+.diagonals {
+  background-color: transparent;
+  color: white;
+  margin: 1vw;
+}

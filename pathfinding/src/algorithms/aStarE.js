@@ -1,6 +1,6 @@
 // ASTAR using the EUCLIDEAN heuristic
 
-export async function aStarE(start, end, grid, speed) {
+export async function aStarE(start, end, grid, speed, diagOn) {
     // Create a single array with all nodes & create a copy
     const nodes = linearNodes(grid)
     // Reset all nodes when function is called --> keep walls
@@ -39,7 +39,7 @@ export async function aStarE(start, end, grid, speed) {
         openList.splice(openList.indexOf(current), 1)
         closedList.push(current)
         closedList.map(node => node.isVisited = true)
-        var neighbours = getNeighbours(current, grid)
+        var neighbours = getNeighbours(current, grid, diagOn)
         for (let i = 0; i < neighbours.length; i++) {
             var node = neighbours[i]
             
@@ -108,10 +108,21 @@ function sortByFScore(set) {
     return set
 }
 // Gets all of the neighbours of the current node
-function getNeighbours(current, grid) {
+function getNeighbours(current, grid, diagOn) {
     const neighbours = []
-    const {row, col} = current
+    const {row, col, isBeingConsidered} = current
 
+    // Get the diagonal neighbours
+    if (diagOn) {
+        // NorthWest
+        if (row > 1 && col > 1) neighbours.push(grid[col-2][row-2])
+        // NorthEast
+        if (row > 1 && col < grid.length) neighbours.push(grid[col][row-2])
+        // SouthWest
+        if (row < grid[0].length && col > 1) neighbours.push(grid[col-2][row])
+        // SouthEast
+        if (row < grid[0].length && col < grid.length) neighbours.push(grid[col][row])
+    }
     // Above --> only get above if not at the top
     if (row > 1) neighbours.push(grid[col-1][row-2])
     // Below --> only get below if not at bottom
