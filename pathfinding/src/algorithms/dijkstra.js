@@ -59,7 +59,7 @@ export async function dijkstra(start, end, grid, SPEED, diagOn) {
 async function updateUnvisitedNeighbours(current, grid, SPEED, diagOn) {
     // First need to get all the unvisited neighbours
     const neighbours = getUnvisitedNeighbours(current, grid, diagOn)
-    //sortUnvisitedByDistance(neighbours)
+    sortUnvisitedByDistance(neighbours)
     
     // Go through neighbours and re-assign their distances
     for (let i = 0; i < neighbours.length; i++) {

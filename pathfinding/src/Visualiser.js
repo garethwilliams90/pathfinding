@@ -30,6 +30,9 @@ export default function Visualiser(props) {
     const [aStarOn, setAStarOn] = useState(false)
     const [diagOn, setDiagOn] = useState(false)
 
+    const [timer, setTimer] = useState(0)
+    const [timerOn, setTimerOn] = useState(false)
+
     // On first render --> create 2D array of nodes
     useEffect(() => {
         for (let col = 1; col < COLS + 1; col++) {
@@ -176,10 +179,6 @@ export default function Visualiser(props) {
         setStartNode({})
         primMaze(nodes, props.sliderValue)
     }
-    // Re-renders for walls
-    // useEffect(() => {
-    // }, [walls, weights, nodes, startNode, endNode])
-
 
     const nodeElements = nodes.map((row, rowIdx) => {
         return (
@@ -257,12 +256,28 @@ export default function Visualiser(props) {
     // Refresh rate of animations
     const [time, setTime] = useState(Date.now());
     useEffect(() => {
-        const interval = setInterval(() => setTime(Date.now()), 1);
+        const interval = setInterval(() => setTime(Date.now()), 10);
         return () => {
             clearInterval(interval);
         };
     }, []);
 
+
+    // Display run time automatically
+    useEffect(() => {
+        let interval = null;
+        if (timerOn && algoOn) {
+          interval = setInterval(() => {
+            setTimer(t => t + 10);
+          }, 1);
+        } else if (!timerOn && timer !== 0) {
+          clearInterval(interval);
+        }
+        return () => clearInterval(interval);
+      }, [timerOn, timer, algoOn]);
+
+
+    // Update status on W key
     useEffect(() => {
         const onESC = (ev) => {
           if (ev.key === "w") setKeyPressed(prevState => !prevState)
@@ -275,6 +290,7 @@ export default function Visualiser(props) {
 
     async function runDijkstra() {
         clearPaths()
+        setTimerOn(true)
         setAlgoOn(true)
         // Wait until dijkstra returns a value before going on to next line
         await dijkstra(startNode, endNode, nodes, props.sliderValue, diagOn)
@@ -284,6 +300,7 @@ export default function Visualiser(props) {
 
     async function runDijkstraDirect() {
         clearPaths()
+        setTimerOn(true)
         setAlgoOn(true)
         // Wait until dijkstra returns a value before going on to next line
         await dijkstraDirect(startNode, endNode, nodes, props.sliderValue)
@@ -293,6 +310,7 @@ export default function Visualiser(props) {
 
     async function runAStar() {  
         clearPaths()  
+        setTimerOn(true)
         setAlgoOn(true)
         setAStarOn(true)
         // Wait until aStar returns a value before visualising the path
@@ -303,6 +321,7 @@ export default function Visualiser(props) {
 
     async function runAStarE() {  
         clearPaths()  
+        setTimerOn(true)
         setAlgoOn(true)
         setAStarOn(true)
         // Wait until aStar returns a value before visualising the path
@@ -313,6 +332,7 @@ export default function Visualiser(props) {
 
     async function runDepthFirst() {
         clearPaths()
+        setTimerOn(true)
         setAlgoOn(true)
         // Wait until aStar returns a value before visualising the path
         await depthFirst(startNode, endNode, nodes, props.sliderValue) 
@@ -342,6 +362,8 @@ export default function Visualiser(props) {
     // Total reset of all nodes and state
     function clearPaths() {
         setAlgoOn(false)
+        setTimerOn(false)
+        setTimer(0)
         for (let i = 0; i < nodes.length; i++) {
             for (let j = 0; j < nodes[i].length; j++) {
                 const node = nodes[i][j]
@@ -363,7 +385,6 @@ export default function Visualiser(props) {
             }
         }
     }
-    
    
     return (
         <div>
@@ -386,6 +407,10 @@ export default function Visualiser(props) {
             />
             <div className='grid'>  
                 {nodeElements}
+            </div>
+            <div className='stats'>
+                <div className='stat-box'></div>
+                <div className='time'>Time: {timer} ms</div>
             </div>
         </div>
     )

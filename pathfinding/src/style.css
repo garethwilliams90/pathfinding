@@ -258,3 +258,32 @@
   width: 1.3vw;
   height: 1.3vw;
 }
+
+
+
+.stat-box {
+  z-index: 99;
+  opacity: 0.3;
+  position: absolute;
+  top: 82vh;
+  left: 1vw;
+  width: 15vw;
+  height: 14vh;
+  background-color: #1500ff;
+  opacity: 0.3;
+} 
+
+.time {
+  padding: 0.6vw;
+  background-color: transparent;
+  color: rgb(0, 255, 51);
+  opacity: 1;
+  z-index: 100;
+  position: absolute;
+  top: 82vh;
+  left: 1vw;
+  width: 15vw;
+  height: 14vh;
+  font-family: monospace;
+  font-size: 1.3vw;
+}
