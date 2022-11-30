@@ -5,14 +5,15 @@ export async function depthFirst(start, end, grid, speed) {
     const nodes = linearNodes(grid)
 
     var openSet = []
+    var closedSet = []
     var current = start
 
     openSet.unshift(current)
-    let count = 0
-    while (openSet.length > 0) {
-        count++
+    
+    while (openSet.length > 0) { 
         current = openSet[0]
         current.isCurrent = true
+        closedSet.push(current)
 
         // End case -- result has been found, return the traced path
         if (current.isEnd) {
@@ -26,8 +27,9 @@ export async function depthFirst(start, end, grid, speed) {
                 ret.map(node => node.isPath = true)
                 curr = curr.previousNode
             }
+            const nodesVisited = closedSet.length
             const depthFirstLength = ret.reverse().length + 1
-            return {depthFirstLength}
+            return {nodesVisited, depthFirstLength}
         }
         // current is not the end so mark as visited
         await sleep(speed)

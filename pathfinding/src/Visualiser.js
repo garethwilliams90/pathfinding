@@ -35,6 +35,7 @@ export default function Visualiser(props) {
 
     const [searched, setSearched] = useState(0)
     const [pathLength, setPathLength] = useState(0)
+    const [nodesVisited, setNodesVisited] = useState(0)
 
     // On first render --> create 2D array of nodes
     useEffect(() => {
@@ -296,10 +297,10 @@ export default function Visualiser(props) {
         setTimerOn(true)
         setAlgoOn(true)
         // Wait until dijkstra returns a value before going on to next line
-        await dijkstra(startNode, endNode, nodes, props.sliderValue, diagOn)
-        const {path, dijkPath} = await shortestPath(endNode, props.sliderValue)
-        //console.log(dijkPath)
+        const {visitedNumber, nodesInVisitedOrder}  = await dijkstra(startNode, endNode, nodes, props.sliderValue, diagOn)
+        const {dijkPath} = await shortestPath(endNode, props.sliderValue)
         setPathLength(dijkPath)
+        setNodesVisited(visitedNumber)
         setAlgoOn(false)
     }
 
@@ -308,9 +309,10 @@ export default function Visualiser(props) {
         setTimerOn(true)
         setAlgoOn(true)
         // Wait until dijkstra returns a value before going on to next line
-        await dijkstraDirect(startNode, endNode, nodes, props.sliderValue)
+        const {visitedNumber, nodesInVisitedOrder} = await dijkstraDirect(startNode, endNode, nodes, props.sliderValue)
         const {path, dijkDirectPath} = await directShortestPath(endNode, props.sliderValue)
         setPathLength(dijkDirectPath)
+        setNodesVisited(visitedNumber)
         setAlgoOn(false)
     }
 
@@ -320,8 +322,9 @@ export default function Visualiser(props) {
         setAlgoOn(true)
         setAStarOn(true)
         // Wait until aStar returns a value before visualising the path
-        const {aStarLength} = await aStar(startNode, endNode, nodes, props.sliderValue, diagOn)
+        const {aStarLength, visitedNumber} = await aStar(startNode, endNode, nodes, props.sliderValue, diagOn)
         setPathLength(aStarLength)
+        setNodesVisited(visitedNumber)
         setAStarOn(false)
         setAlgoOn(false)
     }
@@ -332,8 +335,9 @@ export default function Visualiser(props) {
         setAlgoOn(true)
         setAStarOn(true)
         // Wait until aStar returns a value before visualising the path
-        const {aStarELength} = await aStarE(startNode, endNode, nodes, props.sliderValue, diagOn)
+        const {aStarELength, visitedNumber} = await aStarE(startNode, endNode, nodes, props.sliderValue, diagOn)
         setPathLength(aStarELength) 
+        setNodesVisited(visitedNumber)
         setAStarOn(false)
         setAlgoOn(false)
     }
@@ -343,8 +347,9 @@ export default function Visualiser(props) {
         setTimerOn(true)
         setAlgoOn(true)
         // Wait until aStar returns a value before visualising the path
-        const {depthFirstLength} = await depthFirst(startNode, endNode, nodes, props.sliderValue) 
+        const {nodesVisited, depthFirstLength} = await depthFirst(startNode, endNode, nodes, props.sliderValue) 
         setPathLength(depthFirstLength)
+        setNodesVisited(nodesVisited)
         setAlgoOn(false)
     }
 
@@ -373,6 +378,7 @@ export default function Visualiser(props) {
         setAlgoOn(false)
         setTimerOn(false)
         setPathLength(0)
+        setNodesVisited(0)
         setTimer(0)
         for (let i = 0; i < nodes.length; i++) {
             for (let j = 0; j < nodes[i].length; j++) {
@@ -422,7 +428,7 @@ export default function Visualiser(props) {
                 <div className='stat-box'></div>
                 <div className='stat-text'>
                     <div className='time'>Time: {timer} ms</div>
-                    <div className='cells-searched'>Cells Searched: {searched} </div>
+                    <div className='cells-searched'>Cells Searched: {nodesVisited} </div>
                     <div className='path-length'>Path Length: {pathLength} </div>
                 </div>
 

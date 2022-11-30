@@ -263,10 +263,10 @@
   z-index: 99;
   opacity: 0.3;
   position: absolute;
-  top: 85vh;
+  top: 87vh;
   left: 1vw;
   width: 15vw;
-  height: 12vh;
+  height: 10vh;
   background-color: #1500ff;
   opacity: 0.3;
 } 
@@ -293,10 +293,10 @@
   opacity: 1;
   z-index: 100;
   position: absolute;
-  top: 85vh;
+  top: 87vh;
   left: 1vw;
   width: 15vw;
-  height: 12vh;
+  height: 10vh;
   font-family: monospace;
-  font-size: 1.3vw;
+  font-size: 1.2vw;
 }

@@ -33,7 +33,8 @@ export async function aStarE(start, end, grid, speed, diagOn) {
                 curr = curr.previousNode
             }
             const aStarELength = ret.reverse().length + 1
-            return {aStarELength}
+            const visitedNumber = closedList.length
+            return {aStarELength, visitedNumber}
         }
 
         // Normal case -- move currentNode from open to closed, process each of its neighbors

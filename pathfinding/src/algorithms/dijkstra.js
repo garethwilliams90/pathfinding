@@ -20,6 +20,7 @@ export async function dijkstra(start, end, grid, SPEED, diagOn) {
 
     // While there are still unvisited nodes
     while (!nodesInVisitedOrder.includes(end)) {
+        const visitedNumber = nodesInVisitedOrder.length
         
         // sort unvisited by distance
         sortUnvisitedByDistance(unvisited)
@@ -32,7 +33,7 @@ export async function dijkstra(start, end, grid, SPEED, diagOn) {
         if (current.isWall) continue
     
         // if current.distance === infinity --> return --> since trapped
-        if (current.distance === Infinity) return nodesInVisitedOrder
+        if (current.distance === Infinity) return {visitedNumber, nodesInVisitedOrder}
 
         // else --> set current to visited and add to visited set .push()
         await sleep(SPEED)
@@ -46,7 +47,7 @@ export async function dijkstra(start, end, grid, SPEED, diagOn) {
         if (current.isEnd || end.isBeingConsidered) {
             current.isCurrent = false
             end.isCurrent = true
-            return nodesInVisitedOrder
+            return {visitedNumber, nodesInVisitedOrder}
         }
         // else --> update unvisited neighbours' distances 
         updateUnvisitedNeighbours(current, grid, SPEED, diagOn)
@@ -58,7 +59,7 @@ export async function dijkstra(start, end, grid, SPEED, diagOn) {
 async function updateUnvisitedNeighbours(current, grid, SPEED, diagOn) {
     // First need to get all the unvisited neighbours
     const neighbours = getUnvisitedNeighbours(current, grid, diagOn)
-    sortUnvisitedByDistance(neighbours)
+    //sortUnvisitedByDistance(neighbours)
     
     // Go through neighbours and re-assign their distances
     for (let i = 0; i < neighbours.length; i++) {
@@ -133,12 +134,11 @@ export async function shortestPath(endNode, SPEED) {
         shortestPath.unshift(currentNode)
         currentNode = currentNode.previousNode
     }
-
     // Colour the nodes
     for (let i = 0; i < shortestPath.length; i++) {
         await sleep(SPEED)
         shortestPath[i].isPath = true
     }
     const dijkPath = shortestPath.length
-    return {shortestPath, dijkPath}
+    return {dijkPath}
 }

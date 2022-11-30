@@ -23,6 +23,7 @@ export async function dijkstraDirect(start, end, grid, SPEED) {
 
     // While there are still unvisited nodes
     while (!nodesInVisitedOrder.includes(end)) {
+        const visitedNumber = nodesInVisitedOrder.length
         
         // sort unvisited by distance
         sortUnvisitedByDistance(unvisited)
@@ -35,7 +36,7 @@ export async function dijkstraDirect(start, end, grid, SPEED) {
         if (current.isWall) continue
     
         // if current.distance === infinity --> return --> since trapped
-        if (current.distance === Infinity) return nodesInVisitedOrder
+        if (current.distance === Infinity) return {visitedNumber, nodesInVisitedOrder}
     
         // else --> set current to visited and add to visited set .push()
         await sleep(SPEED)
@@ -49,7 +50,7 @@ export async function dijkstraDirect(start, end, grid, SPEED) {
         if (current.isEnd || end.isBeingConsidered) {
             current.isCurrent = false
             end.isCurrent = true
-            return nodesInVisitedOrder
+            return {visitedNumber, nodesInVisitedOrder}
         }
         // else --> update unvisited neighbours' distances 
         updateUnvisitedNeighbours(start, end, current, grid, SPEED)
