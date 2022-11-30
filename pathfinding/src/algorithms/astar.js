@@ -18,7 +18,6 @@ export async function aStar(start, end, grid, speed, diagOn) {
 
         // Grab the lowest f(x) to process next
         var current = getLowestFScore(openList)
-        current.isBeingConsidered = true
         
         // End case -- result has been found, return the traced path
         if (current.isEnd) {
@@ -49,7 +48,6 @@ export async function aStar(start, end, grid, speed, diagOn) {
                 // not a valid node to process, skip to next neighbor
                 continue
             }
-            node.isCurrent = true
             node.isBeingConsidered = true
 
             // g score is the shortest distance from start to current node, we need to check if
@@ -63,12 +61,14 @@ export async function aStar(start, end, grid, speed, diagOn) {
                 gScoreIsBest = true
                 node.hScore = getHScore(node, end)
                 openList.push(node)
+                node.isCurrent = true
+                node.isPath = false
             }
             else if (gScore < node.gScore) {
                 // We have already seen the node, but last time it had a worse g (distance from start)
                 gScoreIsBest = true
                 node.isCurrent = false
-                node.isBeingConsidered = true
+                node.isPath = false
             }
 
             if (gScoreIsBest) {
@@ -79,9 +79,20 @@ export async function aStar(start, end, grid, speed, diagOn) {
                 node.previousNode = current
                 node.gScore = gScore
                 node.fScore = node.gScore + node.hScore
-                node.isVisited = true
+                
                 node.isCurrent = false
-                node.isBeingConsidered = false
+                node.isBeingConsidered = true
+
+                // Visually update the best path constantly throughout the process
+                var curr = current
+                curr.isCurrent = false
+                var ret = []
+                while (curr.previousNode) {
+                    ret.push(curr)
+                    nodes.map(node => node.isCurrent=false)
+                    ret.map(node => node.isCurrent = true)
+                    curr = curr.previousNode
+                }
             }
         }
     }

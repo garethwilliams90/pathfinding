@@ -32,8 +32,7 @@ export default function Visualiser(props) {
 
     const [timer, setTimer] = useState(0)
     const [timerOn, setTimerOn] = useState(false)
-
-    const [searched, setSearched] = useState(0)
+    
     const [pathLength, setPathLength] = useState(0)
     const [nodesVisited, setNodesVisited] = useState(0)
 
