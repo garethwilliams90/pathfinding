@@ -255,20 +255,18 @@
 }
 
 .checkbox {
-  width: 1.3vw;
-  height: 1.3vw;
+  width: 1.4vw;
+  height: 1.4vw;
 }
-
-
 
 .stat-box {
   z-index: 99;
   opacity: 0.3;
   position: absolute;
-  top: 82vh;
+  top: 85vh;
   left: 1vw;
   width: 15vw;
-  height: 14vh;
+  height: 12vh;
   background-color: #1500ff;
   opacity: 0.3;
 } 
@@ -295,10 +293,10 @@
   opacity: 1;
   z-index: 100;
   position: absolute;
-  top: 82vh;
+  top: 85vh;
   left: 1vw;
   width: 15vw;
-  height: 14vh;
+  height: 12vh;
   font-family: monospace;
   font-size: 1.3vw;
 }
