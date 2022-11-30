@@ -148,6 +148,7 @@ export async function directShortestPath(endNode, SPEED) {
         await sleep(SPEED)
         shortestPath[i].isPath = true
     }
-    return shortestPath
+    const dijkDirectPath = shortestPath.length
+    return {shortestPath, dijkDirectPath}
 }
 

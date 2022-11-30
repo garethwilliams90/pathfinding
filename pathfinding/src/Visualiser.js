@@ -309,7 +309,8 @@ export default function Visualiser(props) {
         setAlgoOn(true)
         // Wait until dijkstra returns a value before going on to next line
         await dijkstraDirect(startNode, endNode, nodes, props.sliderValue)
-        directShortestPath(endNode, props.sliderValue)
+        const {path, dijkDirectPath} = await directShortestPath(endNode, props.sliderValue)
+        setPathLength(dijkDirectPath)
         setAlgoOn(false)
     }
 
@@ -319,7 +320,8 @@ export default function Visualiser(props) {
         setAlgoOn(true)
         setAStarOn(true)
         // Wait until aStar returns a value before visualising the path
-        await aStar(startNode, endNode, nodes, props.sliderValue, diagOn) 
+        const {aStarLength} = await aStar(startNode, endNode, nodes, props.sliderValue, diagOn)
+        setPathLength(aStarLength)
         setAStarOn(false)
         setAlgoOn(false)
     }
@@ -330,7 +332,8 @@ export default function Visualiser(props) {
         setAlgoOn(true)
         setAStarOn(true)
         // Wait until aStar returns a value before visualising the path
-        await aStarE(startNode, endNode, nodes, props.sliderValue, diagOn) 
+        const {aStarELength} = await aStarE(startNode, endNode, nodes, props.sliderValue, diagOn)
+        setPathLength(aStarELength) 
         setAStarOn(false)
         setAlgoOn(false)
     }
@@ -368,6 +371,7 @@ export default function Visualiser(props) {
     function clearPaths() {
         setAlgoOn(false)
         setTimerOn(false)
+        setPathLength(0)
         setTimer(0)
         for (let i = 0; i < nodes.length; i++) {
             for (let j = 0; j < nodes[i].length; j++) {

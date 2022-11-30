@@ -32,7 +32,8 @@ export async function aStar(start, end, grid, speed, diagOn) {
                 ret.map(node => node.isPath = true)
                 curr = curr.previousNode
             }
-            return ret.reverse()
+            const aStarLength = ret.reverse().length + 1
+            return {aStarLength}
         }
 
         // Normal case -- move currentNode from open to closed, process each of its neighbors
