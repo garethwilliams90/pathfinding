@@ -343,7 +343,8 @@ export default function Visualiser(props) {
         setTimerOn(true)
         setAlgoOn(true)
         // Wait until aStar returns a value before visualising the path
-        await depthFirst(startNode, endNode, nodes, props.sliderValue) 
+        const {depthFirstLength} = await depthFirst(startNode, endNode, nodes, props.sliderValue) 
+        setPathLength(depthFirstLength)
         setAlgoOn(false)
     }
 

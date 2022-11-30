@@ -26,7 +26,8 @@ export async function depthFirst(start, end, grid, speed) {
                 ret.map(node => node.isPath = true)
                 curr = curr.previousNode
             }
-            return ret.reverse()
+            const depthFirstLength = ret.reverse().length + 1
+            return {depthFirstLength}
         }
         // current is not the end so mark as visited
         await sleep(speed)
