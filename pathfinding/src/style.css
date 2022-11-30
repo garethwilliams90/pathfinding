@@ -274,6 +274,21 @@
 } 
 
 .time {
+  background-color: transparent;
+}
+
+.cells-searched {
+  background-color: transparent;
+}
+
+.path-length {
+  background-color: transparent;
+}
+
+.stat-text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   padding: 0.6vw;
   background-color: transparent;
   color: rgb(0, 255, 51);

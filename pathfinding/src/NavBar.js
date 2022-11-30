@@ -57,7 +57,7 @@ export default function NavBar(props) {
                     <button
                         className='algo-button button dijkstra'
                         onClick={props.runDijkstraDirect}
-                        disabled={props.algoOn}
+                        disabled={props.algoOn || props.diagOn}
                     >
                         Biased Dijkstra
                     </button>
@@ -78,7 +78,7 @@ export default function NavBar(props) {
                     <button
                         className='algo-button button depth'
                         onClick={props.runDepthFirst}
-                        disabled={props.algoOn}
+                        disabled={props.algoOn || props.diagOn}
                     >
                         Depth First
                     </button>

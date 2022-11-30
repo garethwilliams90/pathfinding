@@ -11,7 +11,6 @@ export async function dijkstra(start, end, grid, SPEED, diagOn) {
         node.isCurrent = false,
         node.isBeingConsidered = false,
         node.isPath = false))
-    
 
     const nodesInVisitedOrder = []
     // Mark ALL nodes as unvisited
@@ -34,7 +33,7 @@ export async function dijkstra(start, end, grid, SPEED, diagOn) {
     
         // if current.distance === infinity --> return --> since trapped
         if (current.distance === Infinity) return nodesInVisitedOrder
-    
+
         // else --> set current to visited and add to visited set .push()
         await sleep(SPEED)
         current.isVisited = true
@@ -140,6 +139,6 @@ export async function shortestPath(endNode, SPEED) {
         await sleep(SPEED)
         shortestPath[i].isPath = true
     }
-    return shortestPath
+    const dijkPath = shortestPath.length
+    return {shortestPath, dijkPath}
 }
-

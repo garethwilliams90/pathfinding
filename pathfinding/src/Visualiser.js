@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { dijkstra, shortestPath } from './algorithms/dijkstra'
+import { dijkstra, shortestPath, dijkVisited } from './algorithms/dijkstra'
 import { dijkstraDirect, directShortestPath} from './algorithms/dijkstraModified'
 import { aStar } from './algorithms/aStar'
 import { aStarE } from './algorithms/aStarE'
@@ -32,6 +32,9 @@ export default function Visualiser(props) {
 
     const [timer, setTimer] = useState(0)
     const [timerOn, setTimerOn] = useState(false)
+
+    const [searched, setSearched] = useState(0)
+    const [pathLength, setPathLength] = useState(0)
 
     // On first render --> create 2D array of nodes
     useEffect(() => {
@@ -294,7 +297,9 @@ export default function Visualiser(props) {
         setAlgoOn(true)
         // Wait until dijkstra returns a value before going on to next line
         await dijkstra(startNode, endNode, nodes, props.sliderValue, diagOn)
-        shortestPath(endNode, props.sliderValue)
+        const {path, dijkPath} = await shortestPath(endNode, props.sliderValue)
+        //console.log(dijkPath)
+        setPathLength(dijkPath)
         setAlgoOn(false)
     }
 
@@ -410,7 +415,12 @@ export default function Visualiser(props) {
             </div>
             <div className='stats'>
                 <div className='stat-box'></div>
-                <div className='time'>Time: {timer} ms</div>
+                <div className='stat-text'>
+                    <div className='time'>Time: {timer} ms</div>
+                    <div className='cells-searched'>Cells Searched: {searched} </div>
+                    <div className='path-length'>Path Length: {pathLength} </div>
+                </div>
+
             </div>
         </div>
     )
