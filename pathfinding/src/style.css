@@ -67,14 +67,13 @@
   opacity: 0.9;
   margin: 0.5vw;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  font-size: 1%;
   width: 8vw;
   height: 5.5vh;
   background-color: #1500ff;
   border-radius: 10px;
   border: none;
   color: whitesmoke;
-  font-size: 1.2vw;
+  font-size: 1.1vw;
 }
 
 .button:hover {
