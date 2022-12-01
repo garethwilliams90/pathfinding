@@ -1,7 +1,6 @@
 # pathfinding
 ### A React application that visualises various popular pathfinding algorithms.
 # https://garethwilliams90.github.io/pathfinding/
-## All the code in this repository is my own. 
 
 ![ezgif com-gif-maker](https://user-images.githubusercontent.com/61457033/202927320-57108c8a-ba6f-4f8b-86f7-02f9141673fe.gif)
 <img width="1440" alt="Screenshot 2022-11-30 at 16 12 48" src="https://user-images.githubusercontent.com/61457033/204851708-779997ee-1405-4b22-a7eb-db9dbd7baed9.png">
