@@ -1,6 +1,6 @@
 // ASTAR
 
-export async function aStar(start, end, grid, speed, diagOn) {
+export async function aStar(start, end, grid, speed, diagOn, livePath) {
     // Create a single array with all nodes & create a copy
     const nodes = linearNodes(grid)
     // Reset all nodes when function is called --> keep walls
@@ -87,11 +87,13 @@ export async function aStar(start, end, grid, speed, diagOn) {
                 var curr = current
                 curr.isCurrent = false
                 var ret = []
-                while (curr.previousNode) {
-                    ret.push(curr)
-                    nodes.map(node => node.isCurrent=false)
-                    ret.map(node => node.isCurrent = true)
-                    curr = curr.previousNode
+                if (livePath === true) {
+                    while (curr.previousNode) {
+                        ret.push(curr)
+                        nodes.map(node => node.isCurrent=false)
+                        ret.map(node => node.isCurrent = true)
+                        curr = curr.previousNode
+                    }
                 }
             }
         }

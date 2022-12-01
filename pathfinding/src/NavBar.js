@@ -17,6 +17,16 @@ export default function NavBar(props) {
                     >
                     </input>
                 </div>
+                <div className='diagonals'>
+                    Live Path
+                    <input 
+                        className='checkbox'
+                        type='checkbox' 
+                        checked={props.livePath}
+                        onChange={props.handleLivePath}
+                    >
+                    </input>
+                </div>
         
                 <button
                         className='button reset'

@@ -32,9 +32,10 @@ export default function Visualiser(props) {
 
     const [timer, setTimer] = useState(0)
     const [timerOn, setTimerOn] = useState(false)
-    
+
     const [pathLength, setPathLength] = useState(0)
     const [nodesVisited, setNodesVisited] = useState(0)
+    const [livePath, setLivePath] = useState(false)
 
     // On first render --> create 2D array of nodes
     useEffect(() => {
@@ -73,6 +74,10 @@ export default function Visualiser(props) {
 
     function handleCheck() {
         setDiagOn(prevState => !prevState)
+    }
+
+    function handleLivePath() {
+        setLivePath(prevState => !prevState)
     }
 
     function handleClick(node) {
@@ -321,7 +326,7 @@ export default function Visualiser(props) {
         setAlgoOn(true)
         setAStarOn(true)
         // Wait until aStar returns a value before visualising the path
-        const {aStarLength, visitedNumber} = await aStar(startNode, endNode, nodes, props.sliderValue, diagOn)
+        const {aStarLength, visitedNumber} = await aStar(startNode, endNode, nodes, props.sliderValue, diagOn, livePath)
         setPathLength(aStarLength)
         setNodesVisited(visitedNumber)
         setAStarOn(false)
@@ -334,7 +339,7 @@ export default function Visualiser(props) {
         setAlgoOn(true)
         setAStarOn(true)
         // Wait until aStar returns a value before visualising the path
-        const {aStarELength, visitedNumber} = await aStarE(startNode, endNode, nodes, props.sliderValue, diagOn)
+        const {aStarELength, visitedNumber} = await aStarE(startNode, endNode, nodes, props.sliderValue, diagOn, livePath)
         setPathLength(aStarELength) 
         setNodesVisited(visitedNumber)
         setAStarOn(false)
@@ -418,6 +423,8 @@ export default function Visualiser(props) {
                 time={time}
                 keyPressed={keyPressed}
                 diagOn={diagOn}
+                livePath={livePath}
+                handleLivePath={handleLivePath}
                 handleCheck={handleCheck}
             />
             <div className='grid'>  
